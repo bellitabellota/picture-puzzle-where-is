@@ -1,0 +1,81 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&family=Shizuru&display=swap');
+
+* {
+  box-sizing: border-box;
+}
+
+h1 {
+  font-family: "Shizuru", system-ui;
+  font-size: calc(2.5rem + 1vw);
+  margin-top: max(0.75rem, 0.75vw);
+  margin-bottom: max(0.75rem, 1vw);
+}
+
+p, a {
+  font-family: Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  font-size: calc(1rem + 0.25vw);
+  margin-top: max(0.5rem, 0.75vw);
+  margin-bottom: max(0.5rem, 0.75vw);
+}
+
+body {
+  background-image: radial-gradient(circle, rgb(191,76,92) 50%, rgba(203,101,103,255) 50%);
+  background-size: 100px 100px;
+  min-height: 98vh;
+  display:flex;
+  justify-content: center;
+  align-items: center;
+}
+
+main {
+  width: fit-content;
+  text-align: center;
+  background-color: white;
+  padding: 15px 20px;
+  border-radius: 20px;
+}
+
+a {
+  color: rgb(83, 82, 82);
+  text-decoration: none;
+}
+
+a:hover, a:focus {
+  color: rgb(226, 50, 74);
+}
+
+.main-picture-puzzle {
+  
+}
+
+.main-picture-puzzle a {
+  display: block;
+  text-align: right;
+  font-size: calc(0.75rem + 0.25vw);
+  margin-bottom: 0;
+  color: rgb(226, 50, 74);
+}
+
+.main-picture-puzzle a:hover, .main-picture-puzzle a:focus {
+  color: rgb(233, 138, 150);
+}
+
+.main-picture-puzzle h1 {
+  margin-top: 0;
+}
+
+.main-picture-puzzle .task-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+
+.main-picture-puzzle .timer {
+  font-size: calc(2rem + 0.25vw);
+  margin: 0;
+}
+
+.main-picture-puzzle img {
+  max-width: 100%;
+}
+

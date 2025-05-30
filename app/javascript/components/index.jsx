@@ -4,8 +4,11 @@ import React, { StrictMode } from 'react';
 import App from "./App";
 
 document.addEventListener("turbo:load", () => {
+  const rootElement = document.createElement("div");
+  rootElement.className="root";
+  
   const root = createRoot(
-    document.body.appendChild(document.createElement("div"))
+    document.body.appendChild(rootElement)
   );
   
   root.render(

@@ -25,11 +25,10 @@ const picturePuzzles = [{
 function PicturePuzzles() {
   const puzzles = picturePuzzles.map((picturePuzzle) => <Link to={`/${picturePuzzle.id}`} key={picturePuzzle.id}>{picturePuzzle.title}<br></br></Link>)
   return(
-    <> 
-    <h1>Choose a Puzzle</h1>
-    {puzzles}
-    </>
-   
+    <main>
+      <h1>Choose a Puzzle</h1>
+      {puzzles}
+    </main>
   )
 }
 
