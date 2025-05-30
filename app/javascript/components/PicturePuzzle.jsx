@@ -7,11 +7,50 @@ const puzzle = {
   id: 1,
   title: "The Smurfs",
   imageSrc: "/picture-puzzle-images/the-smurfs.jpg",
-  coordinatesTargets: [],
-  taskDescription: "Find Papa Smurf, Smurfette and Brainy Smurf."
+  taskDescription: "Find Papa Smurf, Smurfette and Brainy Smurf.",
+  resolution: [1000, 674],
+  targets: [
+    { name: "Smurfette", boundingBox: { xMin: 90, xMax: 140, yMin: 360, yMax: 440 }},
+    { name: "Papa Smurf", boundingBox: { xMin: 410, xMax: 475, yMin: 420, yMax: 507 }}, 
+    { name: "Brainy Smurf", boundingBox: { xMin: 277, xMax: 343, yMin: 525, yMax: 655}}
+  ]
 }
 
 function PicturePuzzle() {
+  function getCoordinates(event) {
+    const img = event.target;
+    const rect = img.getBoundingClientRect();
+
+    const displayedWidth = rect.width;
+    const displayedHeight = rect.height;
+
+    const scalingFactorX = displayedWidth / puzzle.resolution[0];
+    const scalingFactorY = displayedHeight / puzzle.resolution[1];
+
+    // Calculate relative click position
+    const x = event.clientX - rect.left;
+    const y = event.clientY - rect.top;
+
+    // Scale click coordinates back to original resolution
+    const originalX = Math.round(x / scalingFactorX);
+    const originalY = Math.round(y / scalingFactorY);
+
+
+    checkIfTargetIdentified(originalX, originalY);
+  }
+
+  function checkIfTargetIdentified(originalX, originalY) {
+    puzzle.targets.forEach((target) => {
+      if (isInsideBoundingBox(originalX, originalY, target.boundingBox)) {
+        console.log(`You found ${target.name }!`);
+      }
+    })
+  }
+
+  function isInsideBoundingBox(x, y, box) {
+    return x >= box.xMin && x <= box.xMax && y >= box.yMin && y <= box.yMax;
+  }
+
   return (
     <main className="main-picture-puzzle">
       <Link to="/" >&lt; Back to Home</Link>
@@ -20,7 +59,7 @@ function PicturePuzzle() {
         <p>{puzzle.taskDescription}</p>
         <Timer />
       </div>
-      <img src={puzzle.imageSrc} />
+      <img src={puzzle.imageSrc} onClick={getCoordinates} />
     </main>
   )
 }
