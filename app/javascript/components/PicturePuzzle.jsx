@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useRef, useState} from "react";
 import { Link } from "react-router-dom";
 
 //The puzzle will be retrieved from the database or passed in in the parent as prop?
@@ -17,6 +17,11 @@ const puzzle = {
 }
 
 function PicturePuzzle() {
+  const [selectedTarget, setSelectedTarget] = useState(null);
+  const [clickedCoordinates, setClickedCoordinates] = useState({ });
+  console.log(`selectedTarget:${selectedTarget}`);
+  console.log(`clickedCoordinates:${clickedCoordinates.originalX} and ${clickedCoordinates.originalY}`);
+
   function getCoordinates(event) {
     const img = event.target;
     const rect = img.getBoundingClientRect();
@@ -28,15 +33,14 @@ function PicturePuzzle() {
     const scalingFactorY = displayedHeight / puzzle.resolution[1];
 
     // Calculate relative click position
-    const x = event.clientX - rect.left;
-    const y = event.clientY - rect.top;
+    const scaledX = event.clientX - rect.left;
+    const scaledY = event.clientY - rect.top;
 
     // Scale click coordinates back to original resolution
-    const originalX = Math.round(x / scalingFactorX);
-    const originalY = Math.round(y / scalingFactorY);
+    const originalX = Math.round(scaledX / scalingFactorX);
+    const originalY = Math.round(scaledY / scalingFactorY);
 
-
-    checkIfTargetIdentified(originalX, originalY);
+    setClickedCoordinates({originalX:originalX, originalY: originalY, scaledX: scaledX, scaledY:scaledY, isSelecting: true})
   }
 
   function checkIfTargetIdentified(originalX, originalY) {
@@ -51,6 +55,14 @@ function PicturePuzzle() {
     return x >= box.xMin && x <= box.xMax && y >= box.yMin && y <= box.yMax;
   }
 
+  const selectBox = useRef(null);
+
+  function confirmTargetSelection() {
+    setSelectedTarget(selectBox.current.value);
+  }
+
+  const targetOptions = puzzle.targets.map((target) => <option value={target.name} key={target.name}>{target.name}</option>)
+
   return (
     <main className="main-picture-puzzle">
       <Link to="/" >&lt; Back to Home</Link>
@@ -59,13 +71,28 @@ function PicturePuzzle() {
         <p>{puzzle.taskDescription}</p>
         <Timer />
       </div>
-      <img src={puzzle.imageSrc} onClick={getCoordinates} />
+
+      <div className="img-container">
+        {clickedCoordinates.isSelecting && (
+          <div className="select-box-container" style={{
+            position: "absolute",
+            top: `${clickedCoordinates.scaledY}px`,
+            left: `${clickedCoordinates.scaledX}px`
+          }}>
+            <select name="selected-target" id="selected-target" ref={selectBox}>
+              {targetOptions}
+            </select>
+            <button onClick={confirmTargetSelection}>OK</button>
+          </div>
+        )}
+        
+        <img src={puzzle.imageSrc} onClick={getCoordinates} />
+      </div>
     </main>
   )
 }
 
 export default PicturePuzzle;
-
 
 function Timer() {
   return(

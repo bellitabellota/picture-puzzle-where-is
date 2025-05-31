@@ -44,10 +44,6 @@ a:hover, a:focus {
   color: rgb(226, 50, 74);
 }
 
-.main-picture-puzzle {
-  
-}
-
 .main-picture-puzzle a {
   display: block;
   text-align: right;
@@ -75,7 +71,37 @@ a:hover, a:focus {
   margin: 0;
 }
 
+.main-picture-puzzle .img-container{
+  position: relative;
+  width: fit-content;
+  height: fit-content;
+}
+
 .main-picture-puzzle img {
   max-width: 100%;
 }
 
+.main-picture-puzzle .select-box-container{
+  background-color: rgb(22, 22, 22);
+  padding: 5px 7px;
+  border-radius: 5px;
+  white-space: nowrap;
+}
+
+.main-picture-puzzle .select-box-container > * {
+  color: white;
+  background-color: rgb(22, 22, 22);
+  border-radius: 5px;
+  font-size: calc(0.75rem + 0.25vw);
+}
+
+.main-picture-puzzle .select-box-container button {
+  border: 1px solid #767676;
+  border-radius: 10px;
+  margin-left: 5px;
+}
+
+.main-picture-puzzle .select-box-container button:hover {
+  border: 1px solid rgb(226, 50, 74);
+  background-color: rgb(226, 50, 74);
+}
