@@ -17,9 +17,16 @@ const puzzle = {
 }
 
 function PicturePuzzle() {
-  const [selectedTarget, setSelectedTarget] = useState(null);
   const [clickedCoordinates, setClickedCoordinates] = useState({ });
-  console.log(`selectedTarget:${selectedTarget}`);
+  const [correctlyIdentifiedTargets, setCorrectlyIdentifiedTargets] = useState([]);
+
+  // Finish and call the below placeCorrectSymbols function
+  function placeCorrectSymbols(correctlyIdentifiedTargets) {
+
+  }
+
+  //Call function that checks if correctlyIdentifiedTargets matches targets to see if puzzle completed.
+
   console.log(`clickedCoordinates:${clickedCoordinates.originalX} and ${clickedCoordinates.originalY}`);
 
   function getCoordinates(event) {
@@ -43,12 +50,15 @@ function PicturePuzzle() {
     setClickedCoordinates({originalX:originalX, originalY: originalY, scaledX: scaledX, scaledY:scaledY, isSelecting: true})
   }
 
-  function checkIfTargetIdentified(originalX, originalY) {
+  function getTargetOfClickedCoordinates(originalX, originalY) {
+    let clickedTarget = null;
+
     puzzle.targets.forEach((target) => {
       if (isInsideBoundingBox(originalX, originalY, target.boundingBox)) {
-        console.log(`You found ${target.name }!`);
+        clickedTarget = target;
       }
     })
+    return clickedTarget;
   }
 
   function isInsideBoundingBox(x, y, box) {
@@ -58,7 +68,25 @@ function PicturePuzzle() {
   const selectBox = useRef(null);
 
   function confirmTargetSelection() {
-    setSelectedTarget(selectBox.current.value);
+    const selectedTargetName = selectBox.current.value;
+    const clickedTarget = getTargetOfClickedCoordinates(clickedCoordinates.originalX, clickedCoordinates.originalY);
+
+    if (clickedTarget && (selectedTargetName === clickedTarget.name)) {
+      if (!correctlyIdentifiedTargets.contains(clickedTarget)) {
+        // Add to correctlyIdentifiedTargets state variable
+        setCorrectlyIdentifiedTargets([...correctlyIdentifiedTargets, clickedTarget]);
+
+        // reset error message
+      } else {
+        //set target already identified message
+      }
+
+    } else {
+      //display incorrect message
+    }
+
+    // Ensure that the select box is removed from screen (until next click on image) 
+    setClickedCoordinates({...clickedCoordinates, isSelecting: false})
   }
 
   const targetOptions = puzzle.targets.map((target) => <option value={target.name} key={target.name}>{target.name}</option>)
