@@ -1,8 +1,9 @@
 import React, {useRef, useState} from "react";
 import { Link } from "react-router-dom";
-import IncorrectMessage from "./IncorrectMessage";
-import SelectBoxContainer from "./SelectBoxContainer";
-import CheckMark from "./PicturePuzzle child components/CheckMark";
+import IncorrectMessage from "./PicturePuzzleChildComponents/IncorrectMessage";
+import SelectBoxContainer from "./PicturePuzzleChildComponents/SelectBoxContainer";
+import CheckMark from "./PicturePuzzleChildComponents/CheckMark";
+import Timer from "./PicturePuzzleChildComponents/Timer";
 
 //The puzzle will be retrieved from the database or passed in in the parent as prop?
 
@@ -111,9 +112,3 @@ function PicturePuzzle() {
 }
 
 export default PicturePuzzle;
-
-function Timer() {
-  return(
-    <p className="timer">00:00</p>
-  )
-}
