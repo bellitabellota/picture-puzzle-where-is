@@ -2,6 +2,7 @@ import React, {useRef, useState} from "react";
 import { Link } from "react-router-dom";
 import IncorrectMessage from "./IncorrectMessage";
 import SelectBoxContainer from "./SelectBoxContainer";
+import CheckMark from "./PicturePuzzle child components/CheckMark";
 
 //The puzzle will be retrieved from the database or passed in in the parent as prop?
 
@@ -22,11 +23,6 @@ function PicturePuzzle() {
   const [clickedCoordinates, setClickedCoordinates] = useState({ });
   const [correctlyIdentifiedTargets, setCorrectlyIdentifiedTargets] = useState([]);
   const [incorrectMessage, setIncorrectMessage] = useState(null);
-
-  // Finish and call the below placeCorrectSymbols function
-  function placeCorrectSymbols(correctlyIdentifiedTargets) {
-
-  }
 
   //Call function that checks if correctlyIdentifiedTargets matches targets to see if puzzle completed.
 
@@ -67,6 +63,7 @@ function PicturePuzzle() {
   }
 
   const selectBox = useRef(null);
+  const imgRef = useRef(null);
 
   function confirmTargetSelection() {
     const selectedTargetName = selectBox.current.value;
@@ -102,8 +99,12 @@ function PicturePuzzle() {
         {clickedCoordinates.isSelecting && 
           <SelectBoxContainer clickedCoordinates={clickedCoordinates} selectBox={selectBox} targets={puzzle.targets} confirmTargetSelection={confirmTargetSelection} />
         }
+
+        { (correctlyIdentifiedTargets.length !== 0) &&
+          <CheckMark identifiedTargets={correctlyIdentifiedTargets} imgRef={imgRef} resolution={puzzle.resolution} />
+        }
         
-        <img src={puzzle.imageSrc} onClick={getCoordinates} />
+        <img src={puzzle.imageSrc} onClick={getCoordinates} ref={imgRef}/>
       </div>
     </main>
   )

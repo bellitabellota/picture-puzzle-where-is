@@ -88,6 +88,12 @@ a:hover, a:focus {
   white-space: nowrap;
 }
 
+.check-mark {
+  position: absolute;
+  width: 7%;
+  transform: translate(-50%, -50%)
+}
+
 .main-picture-puzzle .select-box-container > * {
   color: white;
   background-color: rgb(22, 22, 22);
