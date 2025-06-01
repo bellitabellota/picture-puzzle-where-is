@@ -73,7 +73,7 @@ function PicturePuzzle() {
     const clickedTarget = getTargetOfClickedCoordinates(clickedCoordinates.originalX, clickedCoordinates.originalY);
 
     if (clickedTarget && (selectedTargetName === clickedTarget.name)) {
-      if (!correctlyIdentifiedTargets.contains(clickedTarget)) {
+      if (!correctlyIdentifiedTargets.includes(clickedTarget)) {
         // Add to correctlyIdentifiedTargets state variable
         setCorrectlyIdentifiedTargets([...correctlyIdentifiedTargets, clickedTarget]);
       } else {
