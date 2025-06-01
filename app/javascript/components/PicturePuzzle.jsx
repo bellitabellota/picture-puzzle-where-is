@@ -1,4 +1,4 @@
-import React, {useRef, useState} from "react";
+import React, {useRef, useState, useEffect} from "react";
 import { Link } from "react-router-dom";
 
 //The puzzle will be retrieved from the database or passed in in the parent as prop?
@@ -19,6 +19,7 @@ const puzzle = {
 function PicturePuzzle() {
   const [clickedCoordinates, setClickedCoordinates] = useState({ });
   const [correctlyIdentifiedTargets, setCorrectlyIdentifiedTargets] = useState([]);
+  const [incorrectMessage, setIncorrectMessage] = useState(null);
 
   // Finish and call the below placeCorrectSymbols function
   function placeCorrectSymbols(correctlyIdentifiedTargets) {
@@ -75,14 +76,12 @@ function PicturePuzzle() {
       if (!correctlyIdentifiedTargets.contains(clickedTarget)) {
         // Add to correctlyIdentifiedTargets state variable
         setCorrectlyIdentifiedTargets([...correctlyIdentifiedTargets, clickedTarget]);
-
-        // reset error message
       } else {
-        //set target already identified message
+        setIncorrectMessage("Already identified. Find the remaining targets.")
       }
 
     } else {
-      //display incorrect message
+      setIncorrectMessage("Not quite. Try it again.")
     }
 
     // Ensure that the select box is removed from screen (until next click on image) 
@@ -91,8 +90,20 @@ function PicturePuzzle() {
 
   const targetOptions = puzzle.targets.map((target) => <option value={target.name} key={target.name}>{target.name}</option>)
 
+  useEffect(() => {
+    if (incorrectMessage) {
+      
+      const timer = setTimeout(() => {
+        setIncorrectMessage(null);
+      }, 2000);
+
+      return () => clearTimeout(timer); // Cleanup function
+    }
+  }, [incorrectMessage]);
+
   return (
     <main className="main-picture-puzzle">
+      {incorrectMessage && (<div className="incorrect-message"><p className="incorrect-icon">+</p><p>{incorrectMessage}</p></div>)}
       <Link to="/" >&lt; Back to Home</Link>
       <h1>{puzzle.title}</h1>
       <div className="task-info">
