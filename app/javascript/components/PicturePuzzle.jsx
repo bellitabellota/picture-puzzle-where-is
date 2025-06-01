@@ -1,5 +1,6 @@
-import React, {useRef, useState, useEffect} from "react";
+import React, {useRef, useState} from "react";
 import { Link } from "react-router-dom";
+import IncorrectMessage from "./IncorrectMessage";
 
 //The puzzle will be retrieved from the database or passed in in the parent as prop?
 
@@ -90,20 +91,9 @@ function PicturePuzzle() {
 
   const targetOptions = puzzle.targets.map((target) => <option value={target.name} key={target.name}>{target.name}</option>)
 
-  useEffect(() => {
-    if (incorrectMessage) {
-      
-      const timer = setTimeout(() => {
-        setIncorrectMessage(null);
-      }, 2000);
-
-      return () => clearTimeout(timer); // Cleanup function
-    }
-  }, [incorrectMessage]);
-
   return (
     <main className="main-picture-puzzle">
-      {incorrectMessage && (<div className="incorrect-message"><p className="incorrect-icon">+</p><p>{incorrectMessage}</p></div>)}
+      {incorrectMessage && <IncorrectMessage message={incorrectMessage} setIncorrectMessage={setIncorrectMessage} />}
       <Link to="/" >&lt; Back to Home</Link>
       <h1>{puzzle.title}</h1>
       <div className="task-info">
