@@ -25,7 +25,14 @@ function PicturePuzzle() {
   const [correctlyIdentifiedTargets, setCorrectlyIdentifiedTargets] = useState([]);
   const [incorrectMessage, setIncorrectMessage] = useState(null);
 
-  //Call function that checks if correctlyIdentifiedTargets matches targets to see if puzzle completed.
+  if (correctlyIdentifiedTargets.length === puzzle.targets.length) {
+    const correctlyIdentifiedTargetsSorted = correctlyIdentifiedTargets.map((target) => JSON.stringify(target)).sort();
+    const puzzleTargetsSorted = puzzle.targets.map((target) => JSON.stringify(target)).sort();
+
+    if (correctlyIdentifiedTargetsSorted.every((value, index) => value === puzzleTargetsSorted[index])) {
+      alert("You found all targets");
+    } 
+  }
 
   function getCoordinates(event) {
     const img = event.target;
