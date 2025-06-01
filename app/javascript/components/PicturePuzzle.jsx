@@ -30,8 +30,6 @@ function PicturePuzzle() {
 
   //Call function that checks if correctlyIdentifiedTargets matches targets to see if puzzle completed.
 
-  console.log(`clickedCoordinates:${clickedCoordinates.originalX} and ${clickedCoordinates.originalY}`);
-
   function getCoordinates(event) {
     const img = event.target;
     const rect = img.getBoundingClientRect();
@@ -89,8 +87,6 @@ function PicturePuzzle() {
     // Ensure that the select box is removed from screen (until next click on image) 
     setClickedCoordinates({...clickedCoordinates, isSelecting: false})
   }
-
-  
 
   return (
     <main className="main-picture-puzzle">
