@@ -1,6 +1,7 @@
 import React, {useRef, useState} from "react";
 import { Link } from "react-router-dom";
 import IncorrectMessage from "./IncorrectMessage";
+import SelectBoxContainer from "./SelectBoxContainer";
 
 //The puzzle will be retrieved from the database or passed in in the parent as prop?
 
@@ -89,7 +90,7 @@ function PicturePuzzle() {
     setClickedCoordinates({...clickedCoordinates, isSelecting: false})
   }
 
-  const targetOptions = puzzle.targets.map((target) => <option value={target.name} key={target.name}>{target.name}</option>)
+  
 
   return (
     <main className="main-picture-puzzle">
@@ -102,18 +103,9 @@ function PicturePuzzle() {
       </div>
 
       <div className="img-container">
-        {clickedCoordinates.isSelecting && (
-          <div className="select-box-container" style={{
-            position: "absolute",
-            top: `${clickedCoordinates.scaledY}px`,
-            left: `${clickedCoordinates.scaledX}px`
-          }}>
-            <select name="selected-target" id="selected-target" ref={selectBox}>
-              {targetOptions}
-            </select>
-            <button onClick={confirmTargetSelection}>OK</button>
-          </div>
-        )}
+        {clickedCoordinates.isSelecting && 
+          <SelectBoxContainer clickedCoordinates={clickedCoordinates} selectBox={selectBox} targets={puzzle.targets} confirmTargetSelection={confirmTargetSelection} />
+        }
         
         <img src={puzzle.imageSrc} onClick={getCoordinates} />
       </div>
