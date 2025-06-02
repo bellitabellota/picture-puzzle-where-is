@@ -1,5 +1,4 @@
 Rails.application.routes.draw do
-  get "picture_puzzles/index"
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
@@ -10,7 +9,13 @@ Rails.application.routes.draw do
   get "service-worker" => "rails/pwa#service_worker", as: :pwa_service_worker
   get "manifest" => "rails/pwa#manifest", as: :pwa_manifest
 
+  namespace :api do
+    namespace :v1 do
+      resources :picture_puzzles, only: [ :index, :show ]
+    end
+  end
+
   # Defines the root path route ("/")
-  root "picture_puzzles#index"
-  get "/*path", to: "picture_puzzles#index"
+  root "homepage#index"
+  get "/*path", to: "homepage#index"
 end
