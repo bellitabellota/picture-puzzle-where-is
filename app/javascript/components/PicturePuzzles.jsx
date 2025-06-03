@@ -1,29 +1,31 @@
-import React from "react";
+import React, {useState, useEffect} from "react";
 import { Link } from "react-router-dom";
 
-//This object serves as model, latter the data will be retrieved from the database with only querying the required information (id, title, image source?)
-const picturePuzzles = [{
-  id: 1,
-  title: "The Smurfs",
-  imageSrc: "XXX.png",
-  coordinatesTargets: [],
-  taskDescription: "Find Papa Smurf, Smurfette and Brainy Smurf."
-}, {
-  id: 2,
-  title: "Forest Life",
-  imageSrc: "XXX.png",
-  coordinatesTargets: [],
-  taskDescription: "Find all Ladybugs."
-}, {
-  id: 3,
-  title: "Ocean World",
-  imageSrc: "XXX.png",
-  coordinatesTargets: [],
-  taskDescription: "Find all Hammerhead sharks."
-}]
-
 function PicturePuzzles() {
+  const [picturePuzzles , setPicturePuzzles ] = useState([]);
+  const [error, setError] = useState(null);
+ 
+  useEffect(() => {
+    const url = "/api/v1/picture_puzzles"
+    
+    fetch(url)
+    .then((response) => {
+      if(!response.ok) {
+        throw new Error("Network response was not ok.");
+      }
+      return response.json();
+    })
+    .then((response) => {
+      setPicturePuzzles(response);
+    }).catch(() => {
+      setError(error)
+    })
+  }, [])
+
+  if(error) return <p>{error.message}</p>;
+
   const puzzles = picturePuzzles.map((picturePuzzle) => <Link to={`/${picturePuzzle.id}`} key={picturePuzzle.id}>{picturePuzzle.title}<br></br></Link>)
+
   return(
     <main>
       <h1>Choose a Puzzle</h1>
