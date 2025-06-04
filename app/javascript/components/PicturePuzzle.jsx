@@ -1,29 +1,46 @@
-import React, {useRef, useState} from "react";
-import { Link } from "react-router-dom";
+import React, {useRef, useState, useEffect} from "react";
+import { Link, useParams } from "react-router-dom";
 import IncorrectMessage from "./PicturePuzzleChildComponents/IncorrectMessage";
 import SelectBoxContainer from "./PicturePuzzleChildComponents/SelectBoxContainer";
 import CheckMark from "./PicturePuzzleChildComponents/CheckMark";
 import Timer from "./PicturePuzzleChildComponents/Timer";
 
-//The puzzle will be retrieved from the database or passed in in the parent as prop?
-
-const puzzle = {
-  id: 1,
-  title: "The Smurfs",
-  imageSrc: "/picture-puzzle-images/the-smurfs.jpg",
-  taskDescription: "Find Papa Smurf, Smurfette and Brainy Smurf.",
-  resolution: [1000, 674],
-  targets: [
-    { name: "Smurfette", boundingBox: { xMin: 90, xMax: 140, yMin: 360, yMax: 440 }},
-    { name: "Papa Smurf", boundingBox: { xMin: 410, xMax: 475, yMin: 420, yMax: 507 }}, 
-    { name: "Brainy Smurf", boundingBox: { xMin: 277, xMax: 343, yMin: 525, yMax: 655}}
-  ]
-}
-
 function PicturePuzzle() {
+  const params = useParams();
+  const [puzzle , setPuzzle ] = useState(null);
+  const [error, setError] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+
   const [clickedCoordinates, setClickedCoordinates] = useState({ });
   const [correctlyIdentifiedTargets, setCorrectlyIdentifiedTargets] = useState([]);
   const [incorrectMessage, setIncorrectMessage] = useState(null);
+  const selectBox = useRef(null);
+  const imgRef = useRef(null);
+
+  useEffect(() => {
+    const url = `/api/v1/picture_puzzles/${params.id}`
+    
+    fetch(url)
+    .then((response) => {
+      if(!response.ok) {
+        throw new Error("Network response was not ok.");
+      }
+      return response.json();
+    })
+    .then((response) => {
+      setPuzzle({...response,
+        imageSrc: response.image_src,
+        taskDescription: response.task_description
+      });
+    }).catch((error) => {
+      setError(error)
+    }).finally(() => {
+      setIsLoading(false)
+    })
+  }, [params.id])
+
+  if(isLoading) return <p>Puzzle is loading ...</p>
+  if(error) return <p>{error.message}</p>;
 
   if (correctlyIdentifiedTargets.length === puzzle.targets.length) {
     const correctlyIdentifiedTargetsSorted = correctlyIdentifiedTargets.map((target) => JSON.stringify(target)).sort();
@@ -41,8 +58,8 @@ function PicturePuzzle() {
     const displayedWidth = rect.width;
     const displayedHeight = rect.height;
 
-    const scalingFactorX = displayedWidth / puzzle.resolution[0];
-    const scalingFactorY = displayedHeight / puzzle.resolution[1];
+    const scalingFactorX = displayedWidth / puzzle.resolution_width;
+    const scalingFactorY = displayedHeight / puzzle.resolution_height;
 
     // Calculate relative click position
     const scaledX = event.clientX - rect.left;
@@ -69,9 +86,6 @@ function PicturePuzzle() {
   function isInsideBoundingBox(x, y, box) {
     return x >= box.xMin && x <= box.xMax && y >= box.yMin && y <= box.yMax;
   }
-
-  const selectBox = useRef(null);
-  const imgRef = useRef(null);
 
   function confirmTargetSelection() {
     const selectedTargetName = selectBox.current.value;
@@ -109,7 +123,7 @@ function PicturePuzzle() {
         }
 
         { (correctlyIdentifiedTargets.length !== 0) &&
-          <CheckMark identifiedTargets={correctlyIdentifiedTargets} imgRef={imgRef} resolution={puzzle.resolution} />
+          <CheckMark identifiedTargets={correctlyIdentifiedTargets} imgRef={imgRef} resolution={[puzzle.resolution_width, puzzle.resolution_height]} />
         }
         
         <img src={puzzle.imageSrc} onClick={getCoordinates} ref={imgRef}/>

@@ -5,5 +5,7 @@ class Api::V1::PicturePuzzlesController < ApplicationController
   end
 
   def show
+    @puzzle = PicturePuzzle.find(params[:id])
+    render json: @puzzle
   end
 end
