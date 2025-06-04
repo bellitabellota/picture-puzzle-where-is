@@ -125,6 +125,7 @@ a:hover, a:focus {
   padding: 3px 15px;
   transition: transform 1.5s ease-in-out, opacity 1.5s ease-in-out;
   animation: slideUpFadeOut 1.5s ease-in-out 1.5s forwards;
+  z-index: 2;
 }
 
 @keyframes slideUpFadeOut {
