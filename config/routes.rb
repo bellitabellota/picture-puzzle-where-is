@@ -12,6 +12,7 @@ Rails.application.routes.draw do
   namespace :api do
     namespace :v1 do
       resources :picture_puzzles, only: [ :index, :show ]
+      post "puzzle_timers/:id/start_timer", to: "puzzle_timers#start_timer"
     end
   end
 
