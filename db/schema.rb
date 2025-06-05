@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_06_02_145621) do
+ActiveRecord::Schema[7.2].define(version: 2025_06_05_110812) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -25,4 +25,16 @@ ActiveRecord::Schema[7.2].define(version: 2025_06_02_145621) do
     t.datetime "updated_at", null: false
     t.index ["title"], name: "index_picture_puzzles_on_title", unique: true
   end
+
+  create_table "puzzle_timers", force: :cascade do |t|
+    t.datetime "start_time"
+    t.datetime "end_time"
+    t.string "player_id_session"
+    t.bigint "picture_puzzle_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["picture_puzzle_id"], name: "index_puzzle_timers_on_picture_puzzle_id"
+  end
+
+  add_foreign_key "puzzle_timers", "picture_puzzles"
 end
