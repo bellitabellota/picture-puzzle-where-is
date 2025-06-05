@@ -39,6 +39,29 @@ function PicturePuzzle() {
     })
   }, [params.id])
 
+  useEffect(()=> {
+    if(puzzle && puzzle.id === params.id) {
+      const url = `/api/v1/puzzle_timers/${params.id}/start_timer`;
+      const token = document.querySelector('meta[name="csrf-token"]').content;
+
+      fetch(url, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "X-CSRF-Token": token
+        }
+      })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(`Network response was not ok - ${response.statusText}`);
+        }
+        return response.json();
+      })
+      .then((data) => console.log("Start Timer:", data))
+      .catch((error) => console.log("Error Start Timer:", error.message));
+    }
+  }, [puzzle, params.id])
+
   if(isLoading) return <p>Puzzle is loading ...</p>
   if(error) return <p>{error.message}</p>;
 
