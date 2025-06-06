@@ -4,6 +4,7 @@ import IncorrectMessage from "./PicturePuzzleChildComponents/IncorrectMessage";
 import SelectBoxContainer from "./PicturePuzzleChildComponents/SelectBoxContainer";
 import CheckMark from "./PicturePuzzleChildComponents/CheckMark";
 import Timer from "./PicturePuzzleChildComponents/Timer";
+import RecordTimeModal from "./PicturePuzzleChildComponents/RecordTimeModal";
 
 function PicturePuzzle() {
   const params = useParams();
@@ -171,6 +172,10 @@ function PicturePuzzle() {
 
         { (correctlyIdentifiedTargets.length !== 0) &&
           <CheckMark identifiedTargets={correctlyIdentifiedTargets} imgRef={imgRef} resolution={[puzzle.resolution_width, puzzle.resolution_height]} />
+        }
+
+        { secondsToCompletion !== null && 
+          <RecordTimeModal secondsToCompletion={secondsToCompletion} />
         }
         <img src={puzzle.imageSrc} onClick={getCoordinates} ref={imgRef}/>
       </div>

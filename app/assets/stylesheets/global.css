@@ -11,7 +11,14 @@ h1 {
   margin-bottom: max(0.75rem, 1vw);
 }
 
-p, a {
+h2 {
+  font-family: "Shizuru", system-ui;
+  font-size: calc(1.25rem + 1vw);
+  margin-top: max(0.75rem, 0.75vw);
+  margin-bottom: max(0.75rem, 1vw);
+}
+
+p, a, input, label {
   font-family: Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
   font-size: calc(1rem + 0.25vw);
   margin-top: max(0.5rem, 0.75vw);
@@ -158,4 +165,46 @@ a:hover, a:focus {
   50% { transform: translateX(-2px) rotate(45deg)}
   75% { transform: translateX(1px) rotate(43deg)}
   100% { transform: translateX(-2px) rotate(45deg)}
+}
+
+.main-picture-puzzle .modal {
+  position: absolute;
+  background-color: rgba(0, 0, 0, 0.8);
+  color: white;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.main-picture-puzzle form > *{
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.main-picture-puzzle .record-time-btn {
+  font-family: Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  font-size: calc(0.875rem + 0.25vw);
+  margin-top: max(0.5rem, 0.75vw);
+  margin-bottom: max(0.5rem, 0.75vw);
+  background-color: black;
+  padding: 0.25rem 1rem;
+  border: 1px solid white;
+  border-radius: 1.5rem;
+  color: white;
+  transition: 0.2s;
+  cursor: pointer;
+}
+
+
+.main-picture-puzzle .record-time-btn:hover {
+  background-color: white;
+  border: 1px solid black;
+  color: black;
 }
