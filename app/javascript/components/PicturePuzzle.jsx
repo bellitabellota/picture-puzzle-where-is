@@ -10,6 +10,7 @@ function PicturePuzzle() {
   const [puzzle , setPuzzle ] = useState(null);
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [secondsToCompletion, setSecondsToCompletion] = useState(null);
 
   const [clickedCoordinates, setClickedCoordinates] = useState({ });
   const [selectedName, setSelectedName] = useState(null);
@@ -124,6 +125,32 @@ function PicturePuzzle() {
     }
   }, [selectedName])
 
+  useEffect(() => {
+    if (puzzle && (correctlyIdentifiedTargets.length === puzzle.targets.length)) {
+      const url = `/api/v1/puzzle-validations/${params.id}/game-state`
+      const token = document.querySelector('meta[name="csrf-token"]').content;
+
+      fetch(url, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "X-CSRF-Token": token
+        },
+      }).then((response) => {
+        if(!response.ok) {
+          throw new Error(`Network response was not ok - ${response.statusText}`);
+        }
+        return response.json()
+      }).then((data) => {
+        if (data.gameFinished === true) {
+          setSecondsToCompletion(data.secondsToCompletion);
+          console.log(data.secondsToCompletion)
+        }
+      }).catch(error => console.log("Error Puzzle Validation Game status:", error.message))
+    }
+  }, [correctlyIdentifiedTargets])
+
+
   if(isLoading) return <p>Puzzle is loading ...</p>
   if(error) return <p>{error.message}</p>;
 
@@ -145,7 +172,6 @@ function PicturePuzzle() {
         { (correctlyIdentifiedTargets.length !== 0) &&
           <CheckMark identifiedTargets={correctlyIdentifiedTargets} imgRef={imgRef} resolution={[puzzle.resolution_width, puzzle.resolution_height]} />
         }
-        
         <img src={puzzle.imageSrc} onClick={getCoordinates} ref={imgRef}/>
       </div>
     </main>

@@ -14,6 +14,7 @@ Rails.application.routes.draw do
       resources :picture_puzzles, only: [ :index, :show ]
       post "puzzle_timers/:id/start_timer", to: "puzzle_timers#start_timer"
       post "puzzle-validations/:id/validate-guess", to: "puzzle_validations#validate_guess"
+      post "puzzle-validations/:id/game-state", to: "puzzle_validations#game_state"
     end
   end
 

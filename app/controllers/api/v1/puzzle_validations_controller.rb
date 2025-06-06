@@ -31,6 +31,17 @@ class Api::V1::PuzzleValidationsController < ApplicationController
     end
   end
 
+  def game_state
+    puzzle_timer = PuzzleTimer.find_by(picture_puzzle_id: params[:id], player_id_session: session[:player_id])
+
+    if puzzle_timer.end_time
+      seconds_to_completion = puzzle_timer.end_time - puzzle_timer.start_time
+      render json: { gameFinished: true, secondsToCompletion: seconds_to_completion }
+    else
+      render json: { gameFinished: false }
+    end
+  end
+
   private
 
   def get_target_of_clicked_coordinates(originalX, originalY, target)
