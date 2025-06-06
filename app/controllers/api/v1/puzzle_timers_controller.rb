@@ -11,4 +11,13 @@ class Api::V1::PuzzleTimersController < ApplicationController
       render json: { error: "Failed to start timer" }, status: :unprocessable_entity
     end
   end
+
+  def end_timer
+    puzzle_timer = PuzzleTimer.find_by(
+      picture_puzzle_id: params[:id],
+      player_id_session: session[:player_id]
+    )
+
+    puzzle_timer.update(end_time: Time.current)
+  end
 end
