@@ -20,11 +20,8 @@ function CheckMark({identifiedTargets, imgRef, resolution}) {
   }, []);
 
   const checkMarksOfIdentified = identifiedTargets.map((target) => {
-    let xCenter = (target.boundingBox.xMin + target.boundingBox.xMax) / 2;
-    let yCenter = (target.boundingBox.yMin + target.boundingBox.yMax) / 2;
-
     return(
-      <img className="check-mark" src="/picture-puzzle-images/utils/checkmark.png" style={{left: `${xCenter * scalingFactors.scaleX}px`, top:`${yCenter* scalingFactors.scaleY}px`}} key={target.name}/>
+      <img className="check-mark" src="/picture-puzzle-images/utils/checkmark.png" style={{left: `${target.xCenter * scalingFactors.scaleX}px`, top:`${target.yCenter* scalingFactors.scaleY}px`}} key={target.name}/>
     )
   })
 

@@ -1,5 +1,5 @@
 import React from "react";
-function SelectBoxContainer({clickedCoordinates, selectBox, targets, confirmTargetSelection}) {
+function SelectBoxContainer({clickedCoordinates, selectBox, targets, selectName}) {
   const targetOptions = targets.map((target) => <option value={target.name} key={target.name}>{target.name}</option>)
 
   return(
@@ -11,7 +11,7 @@ function SelectBoxContainer({clickedCoordinates, selectBox, targets, confirmTarg
       <select name="selected-target" id="selected-target" ref={selectBox}>
         {targetOptions}
       </select>
-      <button onClick={confirmTargetSelection}>OK</button>
+      <button onClick={selectName}>OK</button>
     </div>
   )
 }

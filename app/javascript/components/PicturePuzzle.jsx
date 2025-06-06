@@ -12,6 +12,7 @@ function PicturePuzzle() {
   const [isLoading, setIsLoading] = useState(true);
 
   const [clickedCoordinates, setClickedCoordinates] = useState({ });
+  const [selectedName, setSelectedName] = useState(null);
   const [correctlyIdentifiedTargets, setCorrectlyIdentifiedTargets] = useState([]);
   const [incorrectMessage, setIncorrectMessage] = useState(null);
   const selectBox = useRef(null);
@@ -39,6 +40,7 @@ function PicturePuzzle() {
     })
   }, [params.id])
 
+/*
   useEffect(()=> {
     if(puzzle && puzzle.id === params.id) {
       const url = `/api/v1/puzzle_timers/${params.id}/start_timer`;
@@ -61,10 +63,9 @@ function PicturePuzzle() {
       .catch((error) => console.log("Error Start Timer:", error.message));
     }
   }, [puzzle, params.id])
+  */
 
-  if(isLoading) return <p>Puzzle is loading ...</p>
-  if(error) return <p>{error.message}</p>;
-
+  /*
   if (correctlyIdentifiedTargets.length === puzzle.targets.length) {
     const correctlyIdentifiedTargetsSorted = correctlyIdentifiedTargets.map((target) => JSON.stringify(target)).sort();
     const puzzleTargetsSorted = puzzle.targets.map((target) => JSON.stringify(target)).sort();
@@ -73,6 +74,7 @@ function PicturePuzzle() {
       alert("You found all targets");
     } 
   }
+    */
 
   function getCoordinates(event) {
     const img = event.target;
@@ -95,40 +97,48 @@ function PicturePuzzle() {
     setClickedCoordinates({originalX:originalX, originalY: originalY, scaledX: scaledX, scaledY:scaledY, isSelecting: true})
   }
 
-  function getTargetOfClickedCoordinates(originalX, originalY) {
-    let clickedTarget = null;
-
-    puzzle.targets.forEach((target) => {
-      if (isInsideBoundingBox(originalX, originalY, target.boundingBox)) {
-        clickedTarget = target;
-      }
-    })
-    return clickedTarget;
-  }
-
-  function isInsideBoundingBox(x, y, box) {
-    return x >= box.xMin && x <= box.xMax && y >= box.yMin && y <= box.yMax;
-  }
-
-  function confirmTargetSelection() {
+  function selectName() {
     const selectedTargetName = selectBox.current.value;
-    const clickedTarget = getTargetOfClickedCoordinates(clickedCoordinates.originalX, clickedCoordinates.originalY);
-
-    if (clickedTarget && (selectedTargetName === clickedTarget.name)) {
-      if (!correctlyIdentifiedTargets.includes(clickedTarget)) {
-        // Add to correctlyIdentifiedTargets state variable
-        setCorrectlyIdentifiedTargets([...correctlyIdentifiedTargets, clickedTarget]);
-      } else {
-        setIncorrectMessage("Already identified. Find the remaining targets.")
-      }
-
-    } else {
-      setIncorrectMessage("Not quite. Try it again.")
-    }
+    setSelectedName(selectedTargetName);
 
     // Ensure that the select box is removed from screen (until next click on image) 
     setClickedCoordinates({...clickedCoordinates, isSelecting: false})
   }
+
+  useEffect(()=>{
+    if (!selectedName) return; 
+    if(selectedName) {
+      const url = `/api/v1/puzzle-validations/${params.id}/validate-guess`
+      const token = document.querySelector('meta[name="csrf-token"]').content;
+      const body = {originalX: clickedCoordinates.originalX, originalY: clickedCoordinates.originalY, selectedName}
+
+      fetch(url, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "X-CSRF-Token": token
+        },
+        body: JSON.stringify(body),
+      }).then((response) => {
+        if(!response.ok) {
+          throw new Error(`Network response was not ok - ${response.statusText}`);
+        }
+        return response.json()
+      }).then((data) => {
+
+        if (data.success === true && !correctlyIdentifiedTargets.includes(data.target)) {
+          setCorrectlyIdentifiedTargets([...correctlyIdentifiedTargets, data.target]);
+        } else {
+          setIncorrectMessage(data.message);
+        }
+
+        setSelectedName(null);
+      }).catch(error=> console.log("Error Puzzle Validation:", error.message))
+    }
+  }, [selectedName])
+
+  if(isLoading) return <p>Puzzle is loading ...</p>
+  if(error) return <p>{error.message}</p>;
 
   return (
     <main className="main-picture-puzzle">
@@ -142,7 +152,7 @@ function PicturePuzzle() {
 
       <div className="img-container">
         {clickedCoordinates.isSelecting && 
-          <SelectBoxContainer clickedCoordinates={clickedCoordinates} selectBox={selectBox} targets={puzzle.targets} confirmTargetSelection={confirmTargetSelection} />
+          <SelectBoxContainer clickedCoordinates={clickedCoordinates} selectBox={selectBox} targets={puzzle.targets} selectName={selectName} />
         }
 
         { (correctlyIdentifiedTargets.length !== 0) &&
