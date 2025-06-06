@@ -40,9 +40,8 @@ function PicturePuzzle() {
     })
   }, [params.id])
 
-/*
   useEffect(()=> {
-    if(puzzle && puzzle.id === params.id) {
+    if(puzzle ) {
       const url = `/api/v1/puzzle_timers/${params.id}/start_timer`;
       const token = document.querySelector('meta[name="csrf-token"]').content;
 
@@ -62,19 +61,7 @@ function PicturePuzzle() {
       .then((data) => console.log("Start Timer:", data))
       .catch((error) => console.log("Error Start Timer:", error.message));
     }
-  }, [puzzle, params.id])
-  */
-
-  /*
-  if (correctlyIdentifiedTargets.length === puzzle.targets.length) {
-    const correctlyIdentifiedTargetsSorted = correctlyIdentifiedTargets.map((target) => JSON.stringify(target)).sort();
-    const puzzleTargetsSorted = puzzle.targets.map((target) => JSON.stringify(target)).sort();
-
-    if (correctlyIdentifiedTargetsSorted.every((value, index) => value === puzzleTargetsSorted[index])) {
-      alert("You found all targets");
-    } 
-  }
-    */
+  }, [puzzle])
 
   function getCoordinates(event) {
     const img = event.target;
