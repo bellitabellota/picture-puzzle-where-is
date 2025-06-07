@@ -35,7 +35,7 @@ class Api::V1::PuzzleValidationsController < ApplicationController
     puzzle_timer = PuzzleTimer.find_by(picture_puzzle_id: params[:id], player_id_session: session[:player_id])
 
     if puzzle_timer.end_time
-      seconds_to_completion = puzzle_timer.end_time - puzzle_timer.start_time
+      seconds_to_completion = (puzzle_timer.end_time - puzzle_timer.start_time).floor
       render json: { gameFinished: true, secondsToCompletion: seconds_to_completion }
     else
       render json: { gameFinished: false }

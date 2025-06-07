@@ -12,6 +12,7 @@ function PicturePuzzle() {
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [secondsToCompletion, setSecondsToCompletion] = useState(null);
+  const [secondsPassed, setSecondsPassed] = useState(0);
 
   const [clickedCoordinates, setClickedCoordinates] = useState({ });
   const [selectedName, setSelectedName] = useState(null);
@@ -151,6 +152,36 @@ function PicturePuzzle() {
     }
   }, [correctlyIdentifiedTargets])
 
+  const savedIncreaseSecondsPassed = useRef();
+
+  function increaseSecondsPassed() {
+    setSecondsPassed(secondsPassed + 1);
+  }
+
+  useEffect(()=> {
+    // saving the increaseSecond function on every render via useRef 
+    // makes sure that when the function is passed into setInterval in the Effect below 
+    // always the most recent state of secondsPassed is referenced
+    savedIncreaseSecondsPassed.current = increaseSecondsPassed;
+  })
+
+  useEffect(()=>{
+    let id;
+    if (secondsToCompletion) {
+      return () => {};
+    }
+
+    if (puzzle) {
+      id = setInterval(() => {savedIncreaseSecondsPassed.current()},  1000)
+    }
+
+    return () => {
+      if (id) {
+        clearInterval(id);
+      }
+    }
+  }, [puzzle, secondsToCompletion])
+
 
   if(isLoading) return <p>Puzzle is loading ...</p>
   if(error) return <p>{error.message}</p>;
@@ -162,7 +193,7 @@ function PicturePuzzle() {
       <h1>{puzzle.title}</h1>
       <div className="task-info">
         <p>{puzzle.taskDescription}</p>
-        <Timer />
+        <Timer seconds={secondsToCompletion ? secondsToCompletion : secondsPassed}/>
       </div>
 
       <div className="img-container">
