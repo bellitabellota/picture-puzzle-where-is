@@ -1,5 +1,11 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&family=Shizuru&display=swap');
 
+:root {
+  --primary-color: rgb(226, 50, 74);
+  --hover-color: rgb(233, 138, 150);
+  --dark-bg: rgb(22, 22, 22);
+}
+
 * {
   box-sizing: border-box;
 }
@@ -48,7 +54,7 @@ a {
 }
 
 a:hover, a:focus {
-  color: rgb(226, 50, 74);
+  color: var(--primary-color);
 }
 
 .main-picture-puzzle a {
@@ -56,11 +62,11 @@ a:hover, a:focus {
   text-align: right;
   font-size: calc(0.75rem + 0.25vw);
   margin-bottom: 0;
-  color: rgb(226, 50, 74);
+  color: var(--primary-color);
 }
 
 .main-picture-puzzle a:hover, .main-picture-puzzle a:focus {
-  color: rgb(233, 138, 150);
+  color: var(--hover-color);
 }
 
 .main-picture-puzzle h1 {
@@ -89,7 +95,7 @@ a:hover, a:focus {
 }
 
 .main-picture-puzzle .select-box-container{
-  background-color: rgb(22, 22, 22);
+  background-color: var(--dark-bg);
   padding: 5px 7px;
   border-radius: 5px;
   white-space: nowrap;
@@ -103,7 +109,7 @@ a:hover, a:focus {
 
 .main-picture-puzzle .select-box-container > * {
   color: white;
-  background-color: rgb(22, 22, 22);
+  background-color: var(--dark-bg);
   border-radius: 5px;
   font-size: calc(0.75rem + 0.25vw);
 }
@@ -115,8 +121,8 @@ a:hover, a:focus {
 }
 
 .main-picture-puzzle .select-box-container button:hover {
-  border: 1px solid rgb(226, 50, 74);
-  background-color: rgb(226, 50, 74);
+  border: 1px solid var(--primary-color);
+  background-color: var(--primary-color);
 }
 
 .main-picture-puzzle .incorrect-message {
@@ -208,3 +214,63 @@ a:hover, a:focus {
   border: 1px solid black;
   color: black;
 }
+
+.main-picture-puzzle-results a {
+  display: block;
+  text-align: right;
+  font-size: calc(0.75rem + 0.25vw);
+  margin-bottom: 0;
+  color: var(--primary-color);
+}
+
+.main-picture-puzzle-results a:hover, .main-picture-puzzle-results a:focus {
+  color: var(--hover-color);
+}
+
+.main-picture-puzzle-results .results-container {
+  display: grid;
+  gap: 1px;
+  border-radius: 15px;
+  box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.575);
+  padding: 1.5rem 1rem;
+  margin-top: 3rem;
+}
+
+.selectedProductContainer {
+  width: 60vw;
+  margin-left: auto;
+  margin-right: auto;
+  border-radius: 15px;
+  box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.575);
+  padding: 0.5rem;
+}
+
+.label-container{
+  border-radius: 5px;
+  color: white;
+  background-color: black;
+  font-weight: bold;
+}
+
+.main-picture-puzzle-results .results-container > div {
+  display: grid;
+  grid-template-columns: 1fr 7fr 2fr;
+  gap: 1rem;
+  box-shadow: 0px 0px 1px rgba(0, 0, 0, 0.3);
+}
+
+.main-picture-puzzle-results .results-container > div > p {
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+.main-picture-puzzle-results .results-container .name,
+.main-picture-puzzle-results .results-container .name-label {
+  justify-self: left;
+}
+
+.main-picture-puzzle-results .results-container .rank,
+.main-picture-puzzle-results .results-container .duration-label {
+  min-width: 40px;
+}
+
