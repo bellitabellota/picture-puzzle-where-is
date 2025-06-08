@@ -1,5 +1,13 @@
 class Api::V1::PuzzleResultsController < ApplicationController
   include ActionView::Helpers::SanitizeHelper
+
+  def index
+    results = PuzzleResult.where(picture_puzzle_id: params[:picture_puzzle_id]).order(:seconds_to_completion)
+
+    picture_puzzle = PicturePuzzle.find(params[:picture_puzzle_id])
+
+    render json: { puzzleTitle: picture_puzzle.title, results: results }
+  end
   def create
     puzzle = PicturePuzzle.find(params[:picture_puzzle_id])
 
