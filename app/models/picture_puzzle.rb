@@ -1,5 +1,6 @@
 class PicturePuzzle < ApplicationRecord
   has_many :puzzle_timers, dependent: :destroy
+  has_many :puzzle_results, dependent: :destroy
 
   validates :title, presence: true, uniqueness: true
   validates :image_src, presence: true
