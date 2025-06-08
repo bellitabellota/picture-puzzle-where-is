@@ -98,7 +98,7 @@ function PicturePuzzle() {
   useEffect(()=>{
     if (!selectedName) return; 
     if(selectedName) {
-      const url = `/api/v1/puzzle-validations/${params.id}/validate-guess`
+      const url = `/api/v1/puzzle_validations/${params.id}/validate_guess`
       const token = document.querySelector('meta[name="csrf-token"]').content;
       const body = {originalX: clickedCoordinates.originalX, originalY: clickedCoordinates.originalY, selectedName}
 
@@ -129,7 +129,7 @@ function PicturePuzzle() {
 
   useEffect(() => {
     if (puzzle && (correctlyIdentifiedTargets.length === puzzle.targets.length)) {
-      const url = `/api/v1/puzzle-validations/${params.id}/game-state`
+      const url = `/api/v1/puzzle_validations/${params.id}/game_state`
       const token = document.querySelector('meta[name="csrf-token"]').content;
 
       fetch(url, {
@@ -146,7 +146,6 @@ function PicturePuzzle() {
       }).then((data) => {
         if (data.gameFinished === true) {
           setSecondsToCompletion(data.secondsToCompletion);
-          console.log(data.secondsToCompletion)
         }
       }).catch(error => console.log("Error Puzzle Validation Game status:", error.message))
     }
