@@ -132,13 +132,8 @@ function PicturePuzzle() {
       const url = `/api/v1/puzzle_validations/${params.id}/game_state`
       const token = document.querySelector('meta[name="csrf-token"]').content;
 
-      fetch(url, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "X-CSRF-Token": token
-        },
-      }).then((response) => {
+      fetch(url)
+      .then((response) => {
         if(!response.ok) {
           throw new Error(`Network response was not ok - ${response.statusText}`);
         }

@@ -17,7 +17,7 @@ Rails.application.routes.draw do
 
       post "puzzle_timers/:id/start_timer", to: "puzzle_timers#start_timer"
       post "puzzle_validations/:id/validate_guess", to: "puzzle_validations#validate_guess"
-      post "puzzle_validations/:id/game_state", to: "puzzle_validations#game_state"
+      get "puzzle_validations/:id/game_state", to: "puzzle_validations#game_state"
     end
   end
 
