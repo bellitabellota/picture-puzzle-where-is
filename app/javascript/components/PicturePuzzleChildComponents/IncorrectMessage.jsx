@@ -8,7 +8,7 @@ function IncorrectMessage({message, setIncorrectMessage}) {
         setIncorrectMessage(null);
       }, 2000);
 
-      return () => clearTimeout(timer); // Cleanup function
+      return () => clearTimeout(timer);
     }
   }, [message]);
 
