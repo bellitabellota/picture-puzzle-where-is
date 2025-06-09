@@ -34,7 +34,7 @@ function RecordTimeModal({secondsToCompletion}) {
       body: JSON.stringify(body)
     }).then((response) => {
       if(!response.ok) {
-        throw new Error(`Network response was not ok - ${response.statusText}`)
+        throw new Error(`HTTP Error ${response.status}: ${response.statusText}`)
       }
       return response.json();
     }).then((data)=> { 
