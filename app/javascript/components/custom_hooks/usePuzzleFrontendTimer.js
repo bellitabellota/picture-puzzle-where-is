@@ -10,7 +10,7 @@ const usePuzzleFrontendTimer = (puzzle, secondsToCompletion) => {
   }
 
   useEffect(()=> {
-    // saving the increaseSecond function on every render via useRef 
+    // saving the increaseSecondsPassed function on every render via useRef 
     // makes sure that when the function is passed into setInterval in the Effect below 
     // always the most recent state of secondsPassed is referenced
     savedIncreaseSecondsPassed.current = increaseSecondsPassed;
