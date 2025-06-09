@@ -41,9 +41,7 @@ function PicturePuzzle() {
         if (!response.ok) {
           throw new Error(`HTTP Error ${response.status}: ${response.statusText}`);
         }
-        return response.json();
       })
-      .then((data) => console.log("Start Timer:", data))
       .catch((error) => setStartTimerError(error));
     }
   }, [puzzle])
