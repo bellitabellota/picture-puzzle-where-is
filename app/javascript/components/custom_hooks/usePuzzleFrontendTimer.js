@@ -18,9 +18,7 @@ const usePuzzleFrontendTimer = (puzzle, secondsToCompletion) => {
 
   useEffect(()=>{
     let id;
-    if (secondsToCompletion) {
-      return () => {};
-    }
+    if (secondsToCompletion) return;
 
     if (puzzle) {
       id = setInterval(() => {savedIncreaseSecondsPassed.current()},  1000)
