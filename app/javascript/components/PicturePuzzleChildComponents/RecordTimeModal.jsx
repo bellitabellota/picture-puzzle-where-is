@@ -23,14 +23,7 @@ function RecordTimeModal({secondsToCompletion}) {
     const url = `/api/v1/picture_puzzles/${params.id}/results`;
     const token = document.querySelector('meta[name="csrf-token').content
 
-    const stripHtmlEntities = (str) => {
-      return String(str)
-        .replace(/\n/g, "<br> <br>")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;");
-    };
-
-    const body = {puzzle_result: {player_name: stripHtmlEntities(playerName)}}
+    const body = {puzzle_result: {player_name: playerName}}
 
     fetch(url, {
       method: "POST",
