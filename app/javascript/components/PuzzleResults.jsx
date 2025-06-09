@@ -1,26 +1,10 @@
 import React, {useEffect, useState} from "react";
 import { useParams, Link } from "react-router-dom";
+import usePuzzleResults from "./custom_hooks/usePuzzleResults";
 
 function PuzzleResults() {
   const params = useParams();
-  const [puzzleResults, setPuzzleResults] = useState([]);
-  const [puzzleTitle, setPuzzleTitle] = useState(null);
-
-  useEffect(() => {
-    const url =`/api/v1/picture_puzzles/${params.id}/results`;
-    fetch(url)
-    .then((response) => {
-      if(!response.ok) {
-        throw new Error("Network response not ok")
-      }
-      return response.json()
-    }).then((data) => {
-      setPuzzleTitle(data.puzzleTitle);
-      setPuzzleResults(data.results);
-    }).catch((error) => {
-      console.log(error);
-    })
-  }, [])
+  const {puzzleResults, puzzleTitle} = usePuzzleResults(params.id);
 
   const resultElements = puzzleResults.map((result, index) => {
     const minutes = Math.floor(result.seconds_to_completion/ 60);
@@ -31,7 +15,6 @@ function PuzzleResults() {
         <p className="rank">{index + 1}</p>
         <p className="name">{result.name}</p>
         <p className="duration">{`${minutes} m ${remainingSeconds} s `}</p>
-
       </div>
     )
   })
