@@ -1,4 +1,4 @@
-import React, {useState, useEffect, use} from "react";
+import {useState, useEffect} from "react";
 
 const usePicturePuzzle = (paramsId) => {
   const [puzzle , setPuzzle ] = useState(null);
