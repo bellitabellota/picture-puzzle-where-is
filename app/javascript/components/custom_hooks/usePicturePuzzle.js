@@ -33,7 +33,7 @@ const usePicturePuzzle = (paramsId) => {
       }
     })
 
-    return () => controller.abort();
+    return () => controller.abort(); // the cleanup function was added because the effect runs when the component mounts. So in case the component unmount before the request completes, the request would have been still active but the component would not be there anymore to handle the response.
 
   }, [paramsId])
 
