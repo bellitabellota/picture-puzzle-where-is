@@ -11,7 +11,9 @@ import usePuzzleFrontendTimer from "./custom_hooks/usePuzzleFrontendTimer";
 
 function PicturePuzzle() {
   const params = useParams();
-  const {puzzle, error, setError, isLoading}  = usePicturePuzzle(params.id);
+  const {puzzle, error, isLoading}  = usePicturePuzzle(params.id);
+
+  const [startTimerError, setStartTimerError] = useState(null); 
 
   const [secondsToCompletion, setSecondsToCompletion] = useState(null);
   const {secondsPassed} = usePuzzleFrontendTimer (puzzle, secondsToCompletion);
@@ -42,7 +44,7 @@ function PicturePuzzle() {
         return response.json();
       })
       .then((data) => console.log("Start Timer:", data))
-      .catch((error) => console.log(error));
+      .catch((error) => setStartTimerError(error));
     }
   }, [puzzle])
 
@@ -128,6 +130,7 @@ function PicturePuzzle() {
 
   if(isLoading) return <p>Puzzle is loading ...</p>
   if(error) return <p>{error.message}</p>;
+  if(startTimerError) return <p>{error.message} - The backend cannot correctly set the start time.</p>;
 
   return (
     <main className="main-picture-puzzle">
