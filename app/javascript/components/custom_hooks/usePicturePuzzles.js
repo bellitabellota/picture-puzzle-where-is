@@ -3,6 +3,7 @@ import {useState, useEffect} from "react";
 const usePicturePuzzles = () => {
   const [picturePuzzles , setPicturePuzzles ] = useState([]);
   const [error, setError] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
  
   useEffect(() => {
     const controller = new AbortController();
@@ -23,13 +24,17 @@ const usePicturePuzzles = () => {
       if (error.name !== "AbortError") {
         setError(error);
       }
+    }).finally(() => {
+      if (!signal.aborted) {
+        setIsLoading(false);
+      }
     })
 
     return () => controller.abort(); // the cleanup function was added because the effect runs when the component mounts. So in case the component unmount before the request completes, the request would have been still active but the component would not be there anymore to handle the response.
     
   }, [])
 
-  return { picturePuzzles, error }
+  return { picturePuzzles, error, isLoading }
 }
 
 export default usePicturePuzzles;
