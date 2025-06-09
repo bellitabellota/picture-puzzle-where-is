@@ -4,6 +4,7 @@ import { useParams, useNavigate } from "react-router-dom";
 function RecordTimeModal({secondsToCompletion}) {
   const params = useParams();
   const [playerName, setPlayerName] = useState(null);
+  const [saveResultsError, setSaveResultsError] = useState(null);
   const inputField = useRef();
   const navigate = useNavigate();
 
@@ -40,18 +41,23 @@ function RecordTimeModal({secondsToCompletion}) {
     }).then((data)=> { 
       navigate(`/${params.id}/results`);
     })
-    .catch((error) => {console.log(error.message)})
+    .catch((error) => {setSaveResultsError(error)})
   }, [playerName, navigate])
 
-  return(
-    <div className="modal">
+  const pageHtml = saveResultsError ? 
+    <div className="modal"><p>{saveResultsError.message} - The puzzle result could not be saved.</p></div> 
+    : 
+    (<div className="modal">
       <h2>PUZZLE FINISHED</h2>
       <p>You solved the puzzle in {minutes !== 0 && (String(minutes) + " minute(s) and ")} {remainingSeconds} seconds.</p>
 
       <label htmlFor="player-name">Enter your name (if you want your time to be recorded).</label>
       <input type="text" id="player-name" name="player-name" ref={inputField}/>
       <button className="record-time-btn" onClick={recordTimeHandler}>Record Time</button>
-    </div>
+    </div>)
+
+  return(
+    pageHtml
   )
 }
 
