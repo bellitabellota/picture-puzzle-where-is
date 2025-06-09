@@ -5,9 +5,12 @@ const usePicturePuzzles = () => {
   const [error, setError] = useState(null);
  
   useEffect(() => {
+    const controller = new AbortController();
+    const signal = controller.signal;
+
     const url = "/api/v1/picture_puzzles"
     
-    fetch(url)
+    fetch(url, {signal})
     .then((response) => {
       if(!response.ok) {
         throw new Error("Network response was not ok.");
@@ -19,6 +22,9 @@ const usePicturePuzzles = () => {
     }).catch(() => {
       setError(error)
     })
+
+    return () => controller.abort();
+    
   }, [])
 
   return { picturePuzzles, error }
