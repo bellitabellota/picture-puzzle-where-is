@@ -14,8 +14,7 @@ function PuzzleResults() {
         throw new Error("Network response not ok")
       }
       return response.json()
-    }).then((data) => {console.log(data.puzzleTitle)
-
+    }).then((data) => {
       setPuzzleTitle(data.puzzleTitle);
       setPuzzleResults(data.results);
     }).catch((error) => {
