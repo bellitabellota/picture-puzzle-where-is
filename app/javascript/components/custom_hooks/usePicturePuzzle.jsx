@@ -6,9 +6,12 @@ const usePicturePuzzle = (paramsId) => {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
+    const controller = new AbortController();
+    const signal = controller.signal;
+    
     const url = `/api/v1/picture_puzzles/${paramsId}`
     
-    fetch(url)
+    fetch(url, {signal})
     .then((response) => {
       if(!response.ok) {
         throw new Error("Network response was not ok.");
@@ -25,6 +28,9 @@ const usePicturePuzzle = (paramsId) => {
     }).finally(() => {
       setIsLoading(false)
     })
+
+    return () => controller.abort();
+
   }, [paramsId])
 
   return { puzzle, error, isLoading }
