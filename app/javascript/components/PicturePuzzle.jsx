@@ -128,7 +128,7 @@ function PicturePuzzle() {
 
   if(isLoading) return <p>Puzzle is loading ...</p>
   if(error) return <p>{error.message}</p>;
-  if(startTimerError) return <p>{error.message} - The backend cannot correctly set the start time.</p>;
+  if(startTimerError) return <p>{startTimerError.message} - The backend cannot correctly set the start time.</p>;
 
   return (
     <main className="main-picture-puzzle">
