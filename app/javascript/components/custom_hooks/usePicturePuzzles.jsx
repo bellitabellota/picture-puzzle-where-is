@@ -19,7 +19,7 @@ const usePicturePuzzles = () => {
     })
     .then((response) => {
       setPicturePuzzles(response);
-    }).catch(() => {
+    }).catch((error) => {
       setError(error)
     })
 
