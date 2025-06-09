@@ -4,8 +4,9 @@ import usePuzzleResults from "./custom_hooks/usePuzzleResults";
 
 function PuzzleResults() {
   const params = useParams();
-  const {puzzleResults, puzzleTitle, error} = usePuzzleResults(params.id);
+  const {puzzleResults, puzzleTitle, error, isLoading} = usePuzzleResults(params.id);
 
+  if(isLoading) return <p>Puzzle Results are loading ...</p>
   if(error) return <p>{error.message}</p>;
 
   const resultElements = puzzleResults.map((result, index) => {
