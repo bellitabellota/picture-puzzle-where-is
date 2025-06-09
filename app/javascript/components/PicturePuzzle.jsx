@@ -6,11 +6,12 @@ import CheckMark from "./PicturePuzzleChildComponents/CheckMark";
 import Timer from "./PicturePuzzleChildComponents/Timer";
 import RecordTimeModal from "./PicturePuzzleChildComponents/RecordTimeModal";
 
+import usePicturePuzzle from "./custom_hooks/usePicturePuzzle";
+
 function PicturePuzzle() {
   const params = useParams();
-  const [puzzle , setPuzzle ] = useState(null);
-  const [error, setError] = useState(null);
-  const [isLoading, setIsLoading] = useState(true);
+  const {puzzle, error, isLoading}  = usePicturePuzzle(params.id);
+
   const [secondsToCompletion, setSecondsToCompletion] = useState(null);
   const [secondsPassed, setSecondsPassed] = useState(0);
 
@@ -20,28 +21,6 @@ function PicturePuzzle() {
   const [incorrectMessage, setIncorrectMessage] = useState(null);
   const selectBox = useRef(null);
   const imgRef = useRef(null);
-
-  useEffect(() => {
-    const url = `/api/v1/picture_puzzles/${params.id}`
-    
-    fetch(url)
-    .then((response) => {
-      if(!response.ok) {
-        throw new Error("Network response was not ok.");
-      }
-      return response.json();
-    })
-    .then((response) => {
-      setPuzzle({...response,
-        imageSrc: response.image_src,
-        taskDescription: response.task_description
-      });
-    }).catch((error) => {
-      setError(error)
-    }).finally(() => {
-      setIsLoading(false)
-    })
-  }, [params.id])
 
   useEffect(()=> {
     if(puzzle ) {
