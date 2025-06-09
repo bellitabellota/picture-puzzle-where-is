@@ -4,7 +4,9 @@ import usePuzzleResults from "./custom_hooks/usePuzzleResults";
 
 function PuzzleResults() {
   const params = useParams();
-  const {puzzleResults, puzzleTitle} = usePuzzleResults(params.id);
+  const {puzzleResults, puzzleTitle, error} = usePuzzleResults(params.id);
+
+  if(error) return <p>{error.message}</p>;
 
   const resultElements = puzzleResults.map((result, index) => {
     const minutes = Math.floor(result.seconds_to_completion/ 60);
