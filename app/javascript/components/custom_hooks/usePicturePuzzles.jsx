@@ -20,7 +20,9 @@ const usePicturePuzzles = () => {
     .then((response) => {
       setPicturePuzzles(response);
     }).catch((error) => {
-      setError(error)
+      if (error.name !== "AbortError") {
+        setError(error);
+      }
     })
 
     return () => controller.abort();

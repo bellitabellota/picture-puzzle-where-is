@@ -24,9 +24,13 @@ const usePicturePuzzle = (paramsId) => {
         taskDescription: response.task_description
       });
     }).catch((error) => {
-      setError(error)
+      if (error.name !== "AbortError") {
+        setError(error);
+      }
     }).finally(() => {
-      setIsLoading(false)
+      if (!signal.aborted) {
+        setIsLoading(false);
+      }
     })
 
     return () => controller.abort();
