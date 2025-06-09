@@ -13,7 +13,7 @@ const usePicturePuzzles = () => {
     fetch(url, {signal})
     .then((response) => {
       if(!response.ok) {
-        throw new Error("Network response was not ok.");
+        throw new Error(`HTTP Error ${response.status}: ${response.statusText}`);
       }
       return response.json();
     })

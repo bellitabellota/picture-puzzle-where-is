@@ -11,7 +11,7 @@ import usePuzzleFrontendTimer from "./custom_hooks/usePuzzleFrontendTimer";
 
 function PicturePuzzle() {
   const params = useParams();
-  const {puzzle, error, isLoading}  = usePicturePuzzle(params.id);
+  const {puzzle, error, setError, isLoading}  = usePicturePuzzle(params.id);
 
   const [secondsToCompletion, setSecondsToCompletion] = useState(null);
   const {secondsPassed} = usePuzzleFrontendTimer (puzzle, secondsToCompletion);
@@ -37,12 +37,12 @@ function PicturePuzzle() {
       })
       .then((response) => {
         if (!response.ok) {
-          throw new Error(`Network response was not ok - ${response.statusText}`);
+          throw new Error(`HTTP Error ${response.status}: ${response.statusText}`);
         }
         return response.json();
       })
       .then((data) => console.log("Start Timer:", data))
-      .catch((error) => console.log("Error Start Timer:", error.message));
+      .catch((error) => console.log(error));
     }
   }, [puzzle])
 
@@ -91,7 +91,7 @@ function PicturePuzzle() {
         body: JSON.stringify(body),
       }).then((response) => {
         if(!response.ok) {
-          throw new Error(`Network response was not ok - ${response.statusText}`);
+          throw new Error(`HTTP Error ${response.status}: ${response.statusText}`);
         }
         return response.json()
       }).then((data) => {
@@ -103,7 +103,7 @@ function PicturePuzzle() {
         }
 
         setSelectedName(null);
-      }).catch(error=> console.log("Error Puzzle Validation:", error.message))
+      }).catch(error=> console.log(error))
     }
   }, [selectedName])
 
@@ -115,14 +115,14 @@ function PicturePuzzle() {
       fetch(url)
       .then((response) => {
         if(!response.ok) {
-          throw new Error(`Network response was not ok - ${response.statusText}`);
+          throw new Error(`HTTP Error ${response.status}: ${response.statusText}`);
         }
         return response.json()
       }).then((data) => {
         if (data.gameFinished === true) {
           setSecondsToCompletion(data.secondsToCompletion);
         }
-      }).catch(error => console.log("Error Puzzle Validation Game status:", error.message))
+      }).catch(error => console.log(error))
     }
   }, [correctlyIdentifiedTargets])
 
