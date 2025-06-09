@@ -15,6 +15,7 @@ function PicturePuzzle() {
 
   const [startTimerError, setStartTimerError] = useState(null); 
   const [validationError, setValidationError] = useState(null);
+  const [gameStateError, setGameStateError] = useState(null);
 
   const [secondsToCompletion, setSecondsToCompletion] = useState(null);
   const {secondsPassed} = usePuzzleFrontendTimer (puzzle, secondsToCompletion);
@@ -121,7 +122,7 @@ function PicturePuzzle() {
         if (data.gameFinished === true) {
           setSecondsToCompletion(data.secondsToCompletion);
         }
-      }).catch(error => console.log(error))
+      }).catch(error => setGameStateError(error));
     }
   }, [correctlyIdentifiedTargets])
 
@@ -129,6 +130,7 @@ function PicturePuzzle() {
   if(error) return <p>{error.message}</p>;
   if(startTimerError) return <p>{startTimerError.message} - The backend cannot correctly set the start time.</p>;
   if(validationError) return <p>{validationError.message} - The backend could not correctly validate the guess.</p>;
+  if(gameStateError) return <p>{gameStateError.message} - The backend could not correctly validate if game is finished.</p>;
 
   return (
     <main className="main-picture-puzzle">
