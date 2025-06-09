@@ -7,13 +7,14 @@ import Timer from "./PicturePuzzleChildComponents/Timer";
 import RecordTimeModal from "./PicturePuzzleChildComponents/RecordTimeModal";
 
 import usePicturePuzzle from "./custom_hooks/usePicturePuzzle";
+import usePuzzleFrontendTimer from "./custom_hooks/usePuzzleFrontendTimer";
 
 function PicturePuzzle() {
   const params = useParams();
   const {puzzle, error, isLoading}  = usePicturePuzzle(params.id);
 
   const [secondsToCompletion, setSecondsToCompletion] = useState(null);
-  const [secondsPassed, setSecondsPassed] = useState(0);
+  const {secondsPassed} = usePuzzleFrontendTimer (puzzle, secondsToCompletion);
 
   const [clickedCoordinates, setClickedCoordinates] = useState({ });
   const [selectedName, setSelectedName] = useState(null);
@@ -124,37 +125,6 @@ function PicturePuzzle() {
       }).catch(error => console.log("Error Puzzle Validation Game status:", error.message))
     }
   }, [correctlyIdentifiedTargets])
-
-  const savedIncreaseSecondsPassed = useRef();
-
-  function increaseSecondsPassed() {
-    setSecondsPassed(secondsPassed + 1);
-  }
-
-  useEffect(()=> {
-    // saving the increaseSecond function on every render via useRef 
-    // makes sure that when the function is passed into setInterval in the Effect below 
-    // always the most recent state of secondsPassed is referenced
-    savedIncreaseSecondsPassed.current = increaseSecondsPassed;
-  })
-
-  useEffect(()=>{
-    let id;
-    if (secondsToCompletion) {
-      return () => {};
-    }
-
-    if (puzzle) {
-      id = setInterval(() => {savedIncreaseSecondsPassed.current()},  1000)
-    }
-
-    return () => {
-      if (id) {
-        clearInterval(id);
-      }
-    }
-  }, [puzzle, secondsToCompletion])
-
 
   if(isLoading) return <p>Puzzle is loading ...</p>
   if(error) return <p>{error.message}</p>;
