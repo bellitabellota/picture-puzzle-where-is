@@ -1,26 +1,9 @@
-import React, {useState, useEffect} from "react";
+import React from "react";
 import { Link } from "react-router-dom";
+import usePicturePuzzles from "./custom_hooks/usePicturePuzzles";
 
 function PicturePuzzles() {
-  const [picturePuzzles , setPicturePuzzles ] = useState([]);
-  const [error, setError] = useState(null);
- 
-  useEffect(() => {
-    const url = "/api/v1/picture_puzzles"
-    
-    fetch(url)
-    .then((response) => {
-      if(!response.ok) {
-        throw new Error("Network response was not ok.");
-      }
-      return response.json();
-    })
-    .then((response) => {
-      setPicturePuzzles(response);
-    }).catch(() => {
-      setError(error)
-    })
-  }, [])
+  const {picturePuzzles, error} = usePicturePuzzles();
 
   if(error) return <p>{error.message}</p>;
 
