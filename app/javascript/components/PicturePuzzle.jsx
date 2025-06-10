@@ -78,38 +78,37 @@ function PicturePuzzle() {
   }
 
   useEffect(()=>{
-    if (!selectedName) return; 
-    if(selectedName) {
-      const url = `/api/v1/puzzle_validations/${params.id}/validate_guess`
-      const token = document.querySelector('meta[name="csrf-token"]').content;
-      const body = {originalX: clickedCoordinates.originalX, originalY: clickedCoordinates.originalY, selectedName}
+    if (!selectedName) return;
 
-      fetch(url, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "X-CSRF-Token": token
-        },
-        body: JSON.stringify(body),
-      }).then((response) => {
+    const url = `/api/v1/puzzle_validations/${params.id}/validate_guess`
+    const token = document.querySelector('meta[name="csrf-token"]').content;
+    const body = {originalX: clickedCoordinates.originalX, originalY: clickedCoordinates.originalY, selectedName}
 
-        if (!response.ok) {
-          return response.json().then((errorData) => {
-            throw new Error(errorData.error || `HTTP Error ${response.status}: ${response.statusText}`);
-          });
-        }
+    fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "X-CSRF-Token": token
+      },
+      body: JSON.stringify(body),
+    }).then((response) => {
 
-        return response.json()
+      if (!response.ok) {
+        return response.json().then((errorData) => {
+          throw new Error(errorData.error || `HTTP Error ${response.status}: ${response.statusText}`);
+        });
+      }
 
-      }).then((data) => {
-        if (data.success === true && !correctlyIdentifiedTargets.includes(data.target)) {
-          setCorrectlyIdentifiedTargets([...correctlyIdentifiedTargets, data.target]);
-        } else {
-          setIncorrectMessage(data.message);
-        }
-        setSelectedName(null);
-      }).catch(error => { setValidationError(error)})
-    }
+      return response.json()
+
+    }).then((data) => {
+      if (data.success === true && !correctlyIdentifiedTargets.includes(data.target)) {
+        setCorrectlyIdentifiedTargets([...correctlyIdentifiedTargets, data.target]);
+      } else {
+        setIncorrectMessage(data.message);
+      }
+      setSelectedName(null);
+    }).catch(error => { setValidationError(error)})
   }, [selectedName])
 
   useEffect(() => {
