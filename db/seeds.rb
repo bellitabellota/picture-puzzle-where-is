@@ -23,3 +23,36 @@ puzzle.assign_attributes(
 )
 
 puzzle.save!
+
+puzzle2 = PicturePuzzle.find_or_initialize_by(title: "Finding Nemo")
+
+puzzle2.assign_attributes(
+  image_src: "/picture-puzzle-images/finding-nemo.jpg",
+  task_description: "Find Marlin, Dory and Crush.",
+  resolution_width: 1280,
+  resolution_height: 720,
+  targets: [
+    { name: "Marlin", boundingBox: { xMin: 579, xMax: 632, yMin: 526, yMax: 589 } },
+    { name: "Crush", boundingBox: { xMin: 102, xMax: 280, yMin: 0, yMax: 122 } },
+    { name: "Dory", boundingBox: { xMin: 633, xMax: 718, yMin: 490, yMax: 589 } }
+  ]
+)
+
+puzzle.save!
+
+puzzle3 = PicturePuzzle.find_or_initialize_by(title: "Peter Pan")
+
+puzzle3.assign_attributes(
+  image_src: "/picture-puzzle-images/peter-pan.jpg",
+  task_description: "Can you identify all side characters from the Peter Pan movie?",
+  resolution_width: 736,
+  resolution_height: 736,
+  targets: [
+    { name: "Wendy Darling", boundingBox: { xMin: 144, xMax: 473, yMin: 50, yMax: 204 } },
+    { name: "Dr. John Darling", boundingBox: { xMin: 22, xMax: 279, yMin: 214, yMax: 369 } },
+    { name: "Michael Darling", boundingBox: { xMin: 104, xMax: 229, yMin: 437, yMax: 532 } },
+    { name: "Tinker Bell", boundingBox: { xMin: 542, xMax: 644, yMin: 556, yMax: 696 } }
+  ]
+)
+
+puzzle3.save!
