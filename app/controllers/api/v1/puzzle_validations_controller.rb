@@ -46,8 +46,8 @@ class Api::V1::PuzzleValidationsController < ApplicationController
 
   private
 
-  def get_target_of_clicked_coordinates(originalX, originalY, target)
-    target.find { |target| isInsideBoundingBox(originalX, originalY, target["boundingBox"]) }
+  def get_target_of_clicked_coordinates(originalX, originalY, targets)
+    targets.find { |target| isInsideBoundingBox(originalX, originalY, target["boundingBox"]) }
   end
 
   def isInsideBoundingBox(x, y, box)
