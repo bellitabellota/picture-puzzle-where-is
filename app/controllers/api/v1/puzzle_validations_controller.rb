@@ -6,19 +6,21 @@ class Api::V1::PuzzleValidationsController < ApplicationController
     clicked_target = get_target_of_clicked_coordinates(params[:originalX], params[:originalY], puzzle.targets)
 
     if clicked_target && (params[:selectedName] == clicked_target["name"])
+
       unless puzzle_timer.identified_targets.include?(clicked_target["name"])
         target_saved = puzzle_timer.update(identified_targets: puzzle_timer.identified_targets.push(clicked_target["name"]))
 
         unless target_saved
-          return render json: { error: "Failed to save identified target in puzzle timer" }, status: :unprocessable_entity
+          return render json: { error: "Failed to save identified target in puzzle timer." }, status: :unprocessable_entity
         end
       end
 
       if puzzle_timer.identified_targets.sort == puzzle.targets.map { |target| target["name"] }.sort
+
         end_time_saved = puzzle_timer.update(end_time: Time.current)
 
         unless end_time_saved
-          return render json: { error: "Failed to save end time in puzzle timer" }, status: :unprocessable_entity
+          return render json: { error: "Failed to save end time in puzzle timer." }, status: :unprocessable_entity
         end
       end
 

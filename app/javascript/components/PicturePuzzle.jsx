@@ -92,10 +92,15 @@ function PicturePuzzle() {
         },
         body: JSON.stringify(body),
       }).then((response) => {
-        if(!response.ok) {
-          throw new Error(`HTTP Error ${response.status}: ${response.statusText}`);
+
+        if (!response.ok) {
+          return response.json().then((errorData) => {
+            throw new Error(errorData.error || `HTTP Error ${response.status}: ${response.statusText}`);
+          });
         }
+
         return response.json()
+
       }).then((data) => {
         if (data.success === true && !correctlyIdentifiedTargets.includes(data.target)) {
           setCorrectlyIdentifiedTargets([...correctlyIdentifiedTargets, data.target]);
@@ -103,7 +108,7 @@ function PicturePuzzle() {
           setIncorrectMessage(data.message);
         }
         setSelectedName(null);
-      }).catch(error => setValidationError(error))
+      }).catch(error => { setValidationError(error)})
     }
   }, [selectedName])
 
@@ -128,9 +133,9 @@ function PicturePuzzle() {
 
   if(isLoading) return <p>Puzzle is loading ...</p>
   if(error) return <p>{error.message}</p>;
-  if(startTimerError) return <p>{startTimerError.message} - The backend cannot correctly set the start time.</p>;
-  if(validationError) return <p>{validationError.message} - The backend could not correctly validate the guess.</p>;
-  if(gameStateError) return <p>{gameStateError.message} - The backend could not correctly validate if game is finished.</p>;
+  if(startTimerError) return <p>{startTimerError.message} - The server could not correctly set the start time.</p>;
+  if(validationError) return <p>{validationError.message} - The server could not correctly process the validation of the guess.</p>;
+  if(gameStateError) return <p>{gameStateError.message} - The server could not correctly process the validation of the game state.</p>;
 
   return (
     <main className="main-picture-puzzle">
