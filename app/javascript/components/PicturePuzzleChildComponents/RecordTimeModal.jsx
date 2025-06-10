@@ -34,9 +34,13 @@ function RecordTimeModal({secondsToCompletion}) {
       },
       body: JSON.stringify(body)
     }).then((response) => {
-      if(!response.ok) {
-        throw new Error(`HTTP Error ${response.status}: ${response.statusText}`)
+      
+      if (!response.ok) {
+        return response.json().then((errorData) => {
+          throw new Error(errorData.error || `HTTP Error ${response.status}: ${response.statusText}`);
+        });
       }
+
       return response.json();
     }).then((data)=> { 
       navigate(`/${params.id}/results`);

@@ -22,7 +22,7 @@ class Api::V1::PuzzleResultsController < ApplicationController
     if result.persisted?
       render json: { message: "Puzzle result successfully saved." }
     else
-      render json: { message: "Puzzle result could not be saved." }, status: :unprocessable_entity
+      render json: { error: "Puzzle result could not be saved." }, status: :unprocessable_entity
     end
   end
 end
