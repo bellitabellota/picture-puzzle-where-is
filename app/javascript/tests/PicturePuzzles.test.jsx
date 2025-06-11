@@ -12,9 +12,9 @@ vi.mock("../components/custom_hooks/usePicturePuzzles", () => ({
 describe("PicturePuzzles", ()=> {
   it("renders 'Puzzles are loading ...' when isLoading is true", () => {
     usePicturePuzzles.mockReturnValue({picturePuzzles: [], error: null, isLoading: true})
-    const {container} = render(<PicturePuzzles />)
+    render(<PicturePuzzles />)
 
-    expect(container).toMatchSnapshot();
+    expect(screen.getByText("Puzzles are loading ...")).toBeInTheDocument();
   })
 
   it("renders error message if usePicturePuzzles returned an Error", () => {
@@ -34,7 +34,7 @@ describe("PicturePuzzles", ()=> {
         id: 2, title: 'Test Puzzle 2', image_src: '/picture-puzzle-images/test-puzzle-2.jpg'
       }
     ], error: false, isLoading: false})
-    
+
     const {container} = render(
       <RouterProvider router={memoryRouter}>
         <PicturePuzzles />
