@@ -14,4 +14,11 @@ describe("PicturePuzzles", ()=> {
 
     expect(container).toMatchSnapshot();
   })
+
+  it("renders error message if usePicturePuzzles returned an Error", () => {
+    usePicturePuzzles.mockReturnValue({picturePuzzles: [], error: new Error("server error"), isLoading: false})
+
+    render(<PicturePuzzles />)
+    expect(screen.getByText("server error")).toBeInTheDocument();
+  })
 });
