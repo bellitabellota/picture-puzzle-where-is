@@ -8,11 +8,10 @@ function PicturePuzzles() {
 
   if(isLoading) return <p>Puzzles are loading ...</p>
   if(error) return <p>{error.message}</p>;
-  console.log(picturePuzzles[0])
 
   const puzzles = picturePuzzles.map((picturePuzzle) => 
-    <Link to={`/${picturePuzzle.id}`} >
-      <div className="picture-puzzle" key={picturePuzzle.id}>
+    <Link to={`/${picturePuzzle.id}`} key={picturePuzzle.id}>
+      <div className="picture-puzzle" >
         <div className="image-container">
           <img src={picturePuzzle.image_src} className="puzzle-image" />
         </div>
