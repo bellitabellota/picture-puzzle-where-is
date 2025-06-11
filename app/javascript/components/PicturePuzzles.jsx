@@ -4,7 +4,6 @@ import usePicturePuzzles from "./custom_hooks/usePicturePuzzles";
 
 function PicturePuzzles() {
   const {picturePuzzles, error, isLoading} = usePicturePuzzles();
-  
 
   if(isLoading) return <p>Puzzles are loading ...</p>
   if(error) return <p>{error.message}</p>;

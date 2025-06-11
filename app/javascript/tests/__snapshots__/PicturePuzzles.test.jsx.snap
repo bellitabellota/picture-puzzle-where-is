@@ -7,3 +7,63 @@ exports[`PicturePuzzles > renders 'Puzzles are loading ...' when isLoading is tr
   </p>
 </div>
 `;
+
+exports[`PicturePuzzles > renders homepage with picturePuzzles if usePicturePuzzles returned picturePuzzles 1`] = `
+<div>
+  <main
+    class="main-picture-puzzles"
+  >
+    <h1>
+      Choose A Puzzle
+    </h1>
+    <div
+      class="grid-container"
+    >
+      <a
+        data-discover="true"
+        href="/1"
+      >
+        <div
+          class="picture-puzzle"
+        >
+          <div
+            class="image-container"
+          >
+            <img
+              class="puzzle-image"
+              src="/picture-puzzle-images/test-puzzle-1.jpg"
+            />
+          </div>
+          <p
+            class="puzzle-title"
+          >
+            Test Puzzle 1
+          </p>
+        </div>
+      </a>
+      <a
+        data-discover="true"
+        href="/2"
+      >
+        <div
+          class="picture-puzzle"
+        >
+          <div
+            class="image-container"
+          >
+            <img
+              class="puzzle-image"
+              src="/picture-puzzle-images/test-puzzle-2.jpg"
+            />
+          </div>
+          <p
+            class="puzzle-title"
+          >
+            Test Puzzle 2
+          </p>
+        </div>
+      </a>
+    </div>
+  </main>
+</div>
+`;

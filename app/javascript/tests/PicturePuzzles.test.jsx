@@ -2,6 +2,8 @@ import PicturePuzzles from "../components/PicturePuzzles";
 import usePicturePuzzles from "../components/custom_hooks/usePicturePuzzles";
 import {render, screen } from "@testing-library/react";
 import React from "react";
+import { createMemoryRouter, RouterProvider } from "react-router-dom";
+import routes from "../routes/index"
 
 vi.mock("../components/custom_hooks/usePicturePuzzles", () => ({
   default: vi.fn()
@@ -20,5 +22,25 @@ describe("PicturePuzzles", ()=> {
 
     render(<PicturePuzzles />)
     expect(screen.getByText("server error")).toBeInTheDocument();
+  })
+
+  it("renders homepage with picturePuzzles if usePicturePuzzles returned picturePuzzles", ()=> {
+    const memoryRouter = createMemoryRouter(routes);
+    usePicturePuzzles.mockReturnValue({picturePuzzles: [
+      {
+        id: 1, title: 'Test Puzzle 1', image_src: '/picture-puzzle-images/test-puzzle-1.jpg'
+      }, 
+      {
+        id: 2, title: 'Test Puzzle 2', image_src: '/picture-puzzle-images/test-puzzle-2.jpg'
+      }
+    ], error: false, isLoading: false})
+    
+    const {container} = render(
+      <RouterProvider router={memoryRouter}>
+        <PicturePuzzles />
+      </RouterProvider>
+    )
+
+    expect(container).toMatchSnapshot();
   })
 });
