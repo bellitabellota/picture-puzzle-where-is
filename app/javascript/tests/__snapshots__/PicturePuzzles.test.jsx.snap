@@ -1,0 +1,9 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`PicturePuzzles > renders 'Puzzles are loading ...' when isLoading is true 1`] = `
+<div>
+  <p>
+    Puzzles are loading ...
+  </p>
+</div>
+`;
