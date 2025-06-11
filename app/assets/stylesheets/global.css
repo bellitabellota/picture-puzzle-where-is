@@ -57,6 +57,41 @@ a:hover, a:focus {
   color: var(--primary-color);
 }
 
+.main-picture-puzzles .grid-container {
+  display: grid;
+  grid-template-columns: repeat( auto-fit, minmax(300px, 1fr) );
+  gap: calc(1rem + 1vw);
+  padding: 1rem;
+}
+
+.main-picture-puzzles .picture-puzzle {
+  box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.575);
+  border-radius: 10px;
+  padding: 10px 15px;
+  transition: 0.15s;
+  cursor: pointer;
+}
+
+.main-picture-puzzles .picture-puzzle:hover {
+  box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.897);
+  transform: scale(1.0375);
+}
+
+.main-picture-puzzles .image-container {
+  width: 100%;
+  aspect-ratio: 5/4;
+}
+
+.main-picture-puzzles .puzzle-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.main-picture-puzzles .picture-puzzle .puzzle-title {
+  font-size: calc(1.25rem + 0.25vw);
+}
+
 .main-picture-puzzle a {
   display: block;
   text-align: right;
