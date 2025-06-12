@@ -104,5 +104,19 @@ describe("PicturePuzzle", ()=> {
     const checkMark = checkMarks.find(img => img.className.includes('check-mark'));
     
     expect(checkMark).toBeInTheDocument();
-  });
+  })
+
+  it('shows completion modal when puzzle is completed', () => {
+    usePicturePuzzle.mockReturnValue({ puzzle: testPuzzle, error: false, isLoading: false})
+    useValidateGuess.mockReturnValue({ correctlyIdentifiedTargets: [], validationError: null });
+    useGameState.mockReturnValue({ secondsToCompletion: 91, gameStateError: null })
+    useStartTimer.mockReturnValue({ startTimerError: null });
+    usePuzzleFrontendTimer.mockReturnValue({ secondsPassed: 0 });
+    
+    render(
+      <RouterProvider router={memoryRouter}></RouterProvider>
+    );
+    
+    expect(screen.getByText("You solved the puzzle in 1 minute(s) and 31 seconds.")).toBeInTheDocument();
+  })
 });
