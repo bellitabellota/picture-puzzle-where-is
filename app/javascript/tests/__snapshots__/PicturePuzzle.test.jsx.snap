@@ -1,0 +1,38 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`PicturePuzzle > renders puzzle if usePicturePuzzle returned a puzzle 1`] = `
+<div>
+  <main
+    class="main-picture-puzzle"
+  >
+    <a
+      data-discover="true"
+      href="/"
+    >
+      &lt; Back to Home
+    </a>
+    <h1>
+      Fun Test Puzzle
+    </h1>
+    <div
+      class="task-info"
+    >
+      <p>
+        Find all Test Targets.
+      </p>
+      <p
+        class="timer"
+      >
+        00:00
+      </p>
+    </div>
+    <div
+      class="img-container"
+    >
+      <img
+        src="/picture-puzzle-images/test-puzzle.jpg"
+      />
+    </div>
+  </main>
+</div>
+`;
