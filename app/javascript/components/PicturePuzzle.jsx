@@ -5,26 +5,27 @@ import SelectBoxContainer from "./PicturePuzzleChildComponents/SelectBoxContaine
 import CheckMark from "./PicturePuzzleChildComponents/CheckMark";
 import Timer from "./PicturePuzzleChildComponents/Timer";
 import RecordTimeModal from "./PicturePuzzleChildComponents/RecordTimeModal";
-
 import usePicturePuzzle from "./custom_hooks/usePicturePuzzle";
 import usePuzzleFrontendTimer from "./custom_hooks/usePuzzleFrontendTimer";
 import useStartTimer from "./custom_hooks/useStartTimer";
+import useValidateGuess from "./custom_hooks/useValidateGuess";
 
 function PicturePuzzle() {
   const params = useParams();
   const {puzzle, error, isLoading}  = usePicturePuzzle(params.id);
+  const [incorrectMessage, setIncorrectMessage] = useState(null);
+  const [clickedCoordinates, setClickedCoordinates] = useState({ });
+  const [selectedName, setSelectedName] = useState(null);
 
   const {startTimerError} = useStartTimer(puzzle, params.id);
-  const [validationError, setValidationError] = useState(null);
   const [gameStateError, setGameStateError] = useState(null);
 
   const [secondsToCompletion, setSecondsToCompletion] = useState(null);
   const {secondsPassed} = usePuzzleFrontendTimer (puzzle, secondsToCompletion);
 
-  const [clickedCoordinates, setClickedCoordinates] = useState({ });
-  const [selectedName, setSelectedName] = useState(null);
-  const [correctlyIdentifiedTargets, setCorrectlyIdentifiedTargets] = useState([]);
-  const [incorrectMessage, setIncorrectMessage] = useState(null);
+  
+  const {correctlyIdentifiedTargets, validationError} = useValidateGuess(selectedName, setSelectedName, params.id, clickedCoordinates, incorrectMessage, setIncorrectMessage)
+
   const selectBox = useRef(null);
   const imgRef = useRef(null);
 
@@ -56,40 +57,6 @@ function PicturePuzzle() {
     // Ensure that the select box is removed from screen (until next click on image) 
     setClickedCoordinates({...clickedCoordinates, isSelecting: false})
   }
-
-  useEffect(()=>{
-    if (!selectedName) return;
-
-    const url = `/api/v1/puzzle_validations/${params.id}/validate_guess`
-    const token = document.querySelector('meta[name="csrf-token"]').content;
-    const body = {originalX: clickedCoordinates.originalX, originalY: clickedCoordinates.originalY, selectedName}
-
-    fetch(url, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "X-CSRF-Token": token
-      },
-      body: JSON.stringify(body),
-    }).then((response) => {
-
-      if (!response.ok) {
-        return response.json().then((errorData) => {
-          throw new Error(errorData.error || `HTTP Error ${response.status}: ${response.statusText}`);
-        });
-      }
-
-      return response.json()
-
-    }).then((data) => {
-      if (data.success === true && !correctlyIdentifiedTargets.includes(data.target)) {
-        setCorrectlyIdentifiedTargets([...correctlyIdentifiedTargets, data.target]);
-      } else {
-        setIncorrectMessage(data.message);
-      }
-      setSelectedName(null);
-    }).catch(error => { setValidationError(error)})
-  }, [selectedName])
 
   useEffect(() => {
     if (puzzle && (correctlyIdentifiedTargets.length === puzzle.targets.length)) {
