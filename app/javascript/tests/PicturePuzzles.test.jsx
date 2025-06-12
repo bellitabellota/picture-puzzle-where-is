@@ -36,9 +36,7 @@ describe("PicturePuzzles", ()=> {
     ], error: false, isLoading: false})
 
     const {container} = render(
-      <RouterProvider router={memoryRouter}>
-        <PicturePuzzles />
-      </RouterProvider>
+      <RouterProvider router={memoryRouter}></RouterProvider>
     )
 
     expect(container).toMatchSnapshot();
