@@ -1,6 +1,6 @@
 import PicturePuzzle from "../components/PicturePuzzle";
 import usePicturePuzzle from "../components/custom_hooks/usePicturePuzzle";
-import {render, screen } from "@testing-library/react";
+import {render, screen, fireEvent } from "@testing-library/react";
 import React from "react";
 import { createMemoryRouter, RouterProvider } from "react-router-dom";
 import routes from "../routes/index"
@@ -71,4 +71,21 @@ describe("PicturePuzzle", ()=> {
 
     expect(container).toMatchSnapshot();
   })
+
+  it('shows the target selection box when image is clicked', () => {
+    usePicturePuzzle.mockReturnValue({ puzzle: testPuzzle, error: false, isLoading: false})
+    useValidateGuess.mockReturnValue({ correctlyIdentifiedTargets: [], validationError: null });
+    useGameState.mockReturnValue({ secondsToCompletion: null, gameStateError: null })
+    useStartTimer.mockReturnValue({ startTimerError: null });
+    usePuzzleFrontendTimer.mockReturnValue({ secondsPassed: 0 });
+  
+    render(
+      <RouterProvider router={memoryRouter}></RouterProvider>
+    )
+    
+    const img = screen.getByRole('img');
+    fireEvent.click(img, { clientX: 100, clientY: 100 });
+    
+    expect(screen.getByRole('combobox')).toBeInTheDocument();
+  });
 });
