@@ -1,6 +1,6 @@
 import React from "react";
 import {fireEvent, render, screen, waitFor } from "@testing-library/react";
-import RecordTimeModal from "../components/PicturePuzzleChildComponents/RecordTimeModal";
+import RecordTimeModal from "../../components/PicturePuzzleChildComponents/RecordTimeModal";
 import { createMemoryRouter, RouterProvider } from "react-router-dom";
 
 

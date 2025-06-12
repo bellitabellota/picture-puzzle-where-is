@@ -1,6 +1,6 @@
 import React from "react";
 import {render, screen, fireEvent } from "@testing-library/react";
-import Timer from "../components/PicturePuzzleChildComponents/Timer"
+import Timer from "../../components/PicturePuzzleChildComponents/Timer"
 
 describe("Timer", ()=> {
   it("formats and displays 0 seconds correctly", () => {

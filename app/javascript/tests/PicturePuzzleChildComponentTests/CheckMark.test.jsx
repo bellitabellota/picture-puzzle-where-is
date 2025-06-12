@@ -1,6 +1,6 @@
 import React from "react";
 import {render, screen } from "@testing-library/react";
-import CheckMark from "../components/PicturePuzzleChildComponents/CheckMark";
+import CheckMark from "../../components/PicturePuzzleChildComponents/CheckMark";
 
 describe("CheckMark", ()=>{
 

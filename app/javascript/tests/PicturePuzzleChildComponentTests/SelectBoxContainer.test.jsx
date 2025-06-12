@@ -1,6 +1,6 @@
 import React from "react";
 import {render, screen, fireEvent } from "@testing-library/react";
-import SelectBoxContainer from "../components/PicturePuzzleChildComponents/SelectBoxContainer";
+import SelectBoxContainer from "../../components/PicturePuzzleChildComponents/SelectBoxContainer";
 
 describe("SelectBoxContainer", ()=> {
   const mockTargets = [

@@ -1,6 +1,6 @@
 import React from "react";
 import {render, screen } from "@testing-library/react";
-import IncorrectMessage from "../components/PicturePuzzleChildComponents/IncorrectMessage";
+import IncorrectMessage from "../../components/PicturePuzzleChildComponents/IncorrectMessage";
 
 describe("IncorrectMessage", () => {
   const testMessage = "Test incorrect message";
