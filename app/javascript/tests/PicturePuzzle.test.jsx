@@ -88,4 +88,21 @@ describe("PicturePuzzle", ()=> {
     
     expect(screen.getByRole('combobox')).toBeInTheDocument();
   });
+
+  it('displays check mark when target is correctly identified', () => {
+    usePicturePuzzle.mockReturnValue({ puzzle: testPuzzle, error: false, isLoading: false})
+    useValidateGuess.mockReturnValue({ correctlyIdentifiedTargets: [{ name: "Identified Test Target", xCenter: 100, yCenter: 61 }], validationError: null });
+    useGameState.mockReturnValue({ secondsToCompletion: null, gameStateError: null })
+    useStartTimer.mockReturnValue({ startTimerError: null });
+    usePuzzleFrontendTimer.mockReturnValue({ secondsPassed: 0 });
+    
+    render(
+      <RouterProvider router={memoryRouter}></RouterProvider>
+    );
+    
+    const checkMarks = screen.getAllByRole('img', { name: '' });
+    const checkMark = checkMarks.find(img => img.className.includes('check-mark'));
+    
+    expect(checkMark).toBeInTheDocument();
+  });
 });
