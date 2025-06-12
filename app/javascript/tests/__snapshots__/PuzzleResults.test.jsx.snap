@@ -1,0 +1,94 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`PuzzleResults > renders puzzleResults and puzzleTitle if usePuzzleResults returned puzzleResults 1`] = `
+<div>
+  <main
+    class="main-picture-puzzle-results"
+  >
+    <a
+      data-discover="true"
+      href="/"
+    >
+      &lt; Back to Home
+    </a>
+    <h1>
+      Test Puzzle 123
+       - Results
+    </h1>
+    <div
+      class="results-container"
+    >
+      <div
+        class="label-container"
+      >
+        <p
+          class="rank-label"
+        >
+          Rank
+        </p>
+        <p
+          class="name-label"
+        >
+          Name
+        </p>
+        <p
+          class="duration-label"
+        >
+          Duration
+        </p>
+      </div>
+      <div>
+        <p
+          class="rank"
+        >
+          1
+        </p>
+        <p
+          class="name"
+        >
+          Player 1
+        </p>
+        <p
+          class="duration"
+        >
+          0 m 28 s 
+        </p>
+      </div>
+      <div>
+        <p
+          class="rank"
+        >
+          2
+        </p>
+        <p
+          class="name"
+        >
+          Player 2
+        </p>
+        <p
+          class="duration"
+        >
+          0 m 35 s 
+        </p>
+      </div>
+      <div>
+        <p
+          class="rank"
+        >
+          3
+        </p>
+        <p
+          class="name"
+        >
+          Player 3
+        </p>
+        <p
+          class="duration"
+        >
+          1 m 8 s 
+        </p>
+      </div>
+    </div>
+  </main>
+</div>
+`;

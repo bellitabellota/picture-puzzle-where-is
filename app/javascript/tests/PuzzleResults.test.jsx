@@ -5,7 +5,6 @@ import usePuzzleResults from "../components/custom_hooks/usePuzzleResults";
 import { createMemoryRouter, RouterProvider } from "react-router-dom";
 import routes from "../routes/index"
 
-
 vi.mock("../components/custom_hooks/usePuzzleResults", () => ({
   default: vi.fn(),
 }))
@@ -25,4 +24,23 @@ describe("PuzzleResults", () => {
     expect(screen.getByText("server error")).toBeInTheDocument();
   })
 
+  it("renders puzzleResults and puzzleTitle if usePuzzleResults returned puzzleResults", ()=> {
+    const memoryRouter = createMemoryRouter(routes, { initialEntries: ["/123/results"] });
+    usePuzzleResults.mockReturnValue({
+      puzzleResults: [
+        {id: 1, name: "Player 1", seconds_to_completion: 28},
+        {id: 2, name: "Player 2", seconds_to_completion: 35},
+        {id: 3, name: "Player 3", seconds_to_completion: 68}
+      ], 
+      puzzleTitle: "Test Puzzle 123", 
+      error: null, 
+      isLoading: false
+    })
+
+    const {container} = render(
+      <RouterProvider router={memoryRouter} />
+    )
+
+    expect(container).toMatchSnapshot();
+  })
 })
