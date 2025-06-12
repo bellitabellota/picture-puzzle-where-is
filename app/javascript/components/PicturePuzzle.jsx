@@ -8,12 +8,13 @@ import RecordTimeModal from "./PicturePuzzleChildComponents/RecordTimeModal";
 
 import usePicturePuzzle from "./custom_hooks/usePicturePuzzle";
 import usePuzzleFrontendTimer from "./custom_hooks/usePuzzleFrontendTimer";
+import useStartTimer from "./custom_hooks/useStartTimer";
 
 function PicturePuzzle() {
   const params = useParams();
   const {puzzle, error, isLoading}  = usePicturePuzzle(params.id);
 
-  const [startTimerError, setStartTimerError] = useState(null); 
+  const {startTimerError} = useStartTimer(puzzle, params.id);
   const [validationError, setValidationError] = useState(null);
   const [gameStateError, setGameStateError] = useState(null);
 
@@ -26,29 +27,6 @@ function PicturePuzzle() {
   const [incorrectMessage, setIncorrectMessage] = useState(null);
   const selectBox = useRef(null);
   const imgRef = useRef(null);
-
-  useEffect(()=> {
-    if(puzzle ) {
-      const url = `/api/v1/puzzle_timers/${params.id}/start_timer`;
-      const token = document.querySelector('meta[name="csrf-token"]').content;
-
-      fetch(url, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "X-CSRF-Token": token
-        }
-      })
-      .then((response) => {
-        if (!response.ok) {
-          return response.json().then((errorData) => {
-            throw new Error(errorData.error || `HTTP Error ${response.status}: ${response.statusText}`);
-          });
-        }
-      })
-      .catch((error) => setStartTimerError(error));
-    }
-  }, [puzzle])
 
   function getCoordinates(event) {
     const img = event.target;
