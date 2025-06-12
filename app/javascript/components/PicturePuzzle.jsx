@@ -9,22 +9,20 @@ import usePicturePuzzle from "./custom_hooks/usePicturePuzzle";
 import usePuzzleFrontendTimer from "./custom_hooks/usePuzzleFrontendTimer";
 import useStartTimer from "./custom_hooks/useStartTimer";
 import useValidateGuess from "./custom_hooks/useValidateGuess";
+import useGameState from "./custom_hooks/useGameState";
 
 function PicturePuzzle() {
   const params = useParams();
   const {puzzle, error, isLoading}  = usePicturePuzzle(params.id);
+  
   const [incorrectMessage, setIncorrectMessage] = useState(null);
   const [clickedCoordinates, setClickedCoordinates] = useState({ });
   const [selectedName, setSelectedName] = useState(null);
 
-  const {startTimerError} = useStartTimer(puzzle, params.id);
-  const [gameStateError, setGameStateError] = useState(null);
-
-  const [secondsToCompletion, setSecondsToCompletion] = useState(null);
-  const {secondsPassed} = usePuzzleFrontendTimer (puzzle, secondsToCompletion);
-
-  
   const {correctlyIdentifiedTargets, validationError} = useValidateGuess(selectedName, setSelectedName, params.id, clickedCoordinates, incorrectMessage, setIncorrectMessage)
+  const {secondsToCompletion, gameStateError} = useGameState(puzzle, correctlyIdentifiedTargets, params.id)
+  const {startTimerError} = useStartTimer(puzzle, params.id);
+  const {secondsPassed} = usePuzzleFrontendTimer (puzzle, secondsToCompletion);
 
   const selectBox = useRef(null);
   const imgRef = useRef(null);
@@ -57,25 +55,6 @@ function PicturePuzzle() {
     // Ensure that the select box is removed from screen (until next click on image) 
     setClickedCoordinates({...clickedCoordinates, isSelecting: false})
   }
-
-  useEffect(() => {
-    if (puzzle && (correctlyIdentifiedTargets.length === puzzle.targets.length)) {
-      const url = `/api/v1/puzzle_validations/${params.id}/game_state`
-      const token = document.querySelector('meta[name="csrf-token"]').content;
-
-      fetch(url)
-      .then((response) => {
-        if(!response.ok) {
-          throw new Error(`HTTP Error ${response.status}: ${response.statusText}`);
-        }
-        return response.json()
-      }).then((data) => {
-        if (data.gameFinished === true) {
-          setSecondsToCompletion(data.secondsToCompletion);
-        }
-      }).catch(error => setGameStateError(error));
-    }
-  }, [correctlyIdentifiedTargets])
 
   if(isLoading) return <p>Puzzle is loading ...</p>
   if(error) return <p>{error.message}</p>;
