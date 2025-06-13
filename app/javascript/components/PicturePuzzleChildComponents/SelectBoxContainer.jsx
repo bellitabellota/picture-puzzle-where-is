@@ -3,7 +3,7 @@ function SelectBoxContainer({clickedCoordinates, selectBox, targets, selectName}
   const targetOptions = targets.map((target) => <option value={target.name} key={target.name}>{target.name}</option>)
 
   return(
-    <div className="select-box-container" style={{
+    <div className="select-box-container" data-testid="select-box-container" style={{
       position: "absolute",
       top: `${clickedCoordinates.scaledY}px`,
       left: `${clickedCoordinates.scaledX}px`

@@ -108,7 +108,7 @@ describe("PicturePuzzle", ()=> {
     expect(container).toMatchSnapshot();
   })
 
-  it('shows the target selection box when image is clicked', () => {
+  it('shows the target selection box when image is clicked (at clicked coordinates)', () => {
     usePicturePuzzle.mockReturnValue({ puzzle: testPuzzle, error: false, isLoading: false})
     useValidateGuess.mockReturnValue({ correctlyIdentifiedTargets: [], validationError: null });
     useGameState.mockReturnValue({ secondsToCompletion: null, gameStateError: null })
@@ -120,9 +120,12 @@ describe("PicturePuzzle", ()=> {
     )
     
     const img = screen.getByRole('img');
-    fireEvent.click(img, { clientX: 100, clientY: 100 });
+    fireEvent.click(img, { clientX: 73, clientY: 50 });
+
+    const targetSelectionBox = screen.getByTestId('select-box-container');
     
-    expect(screen.getByRole('combobox')).toBeInTheDocument();
+    expect(targetSelectionBox).toBeInTheDocument();
+    expect(targetSelectionBox).toHaveStyle({position: 'absolute', top: '50px', left: '73px'});
   });
 
   it('displays check mark when target is correctly identified', () => {
