@@ -57,6 +57,18 @@ describe("PicturePuzzle", ()=> {
     expect(screen.getByText("server error")).toBeInTheDocument();
   })
 
+  it("renders error message if useStartTimer returned an Error", () => {
+    usePicturePuzzle.mockReturnValue({puzzle: null, error: null, isLoading: false})
+    useValidateGuess.mockReturnValue({ correctlyIdentifiedTargets: [], validationError: null });
+    useGameState.mockReturnValue({ secondsToCompletion: null, gameStateError: null })
+    useStartTimer.mockReturnValue({ startTimerError: new Error("useStartTimer error") });
+
+    usePuzzleFrontendTimer.mockReturnValue({ secondsPassed: 0 });
+
+    render(<PicturePuzzle />)
+    expect(screen.getByText("useStartTimer error - The server could not correctly set the start time.")).toBeInTheDocument();
+  })
+
   it("renders puzzle if usePicturePuzzle returned a puzzle", ()=> {
     usePicturePuzzle.mockReturnValue({ puzzle: testPuzzle, error: false, isLoading: false})
     useValidateGuess.mockReturnValue({ correctlyIdentifiedTargets: [], validationError: null });
