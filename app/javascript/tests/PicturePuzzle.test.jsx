@@ -81,6 +81,18 @@ describe("PicturePuzzle", ()=> {
     expect(screen.getByText("useValidationGuess error - The server could not correctly process the validation of the guess.")).toBeInTheDocument();
   })
 
+  it("renders error message if useGameState returned an Error", () => {
+    usePicturePuzzle.mockReturnValue({puzzle: null, error: null, isLoading: false})
+    useValidateGuess.mockReturnValue({ correctlyIdentifiedTargets: [], validationError: null });
+    useGameState.mockReturnValue({ secondsToCompletion: null, gameStateError: new Error("useGameState error") })
+    useStartTimer.mockReturnValue({ startTimerError: null });
+
+    usePuzzleFrontendTimer.mockReturnValue({ secondsPassed: 0 });
+
+    render(<PicturePuzzle />)
+    expect(screen.getByText("useGameState error - The server could not correctly process the validation of the game state.")).toBeInTheDocument();
+  })
+
   it("renders puzzle if usePicturePuzzle returned a puzzle", ()=> {
     usePicturePuzzle.mockReturnValue({ puzzle: testPuzzle, error: false, isLoading: false})
     useValidateGuess.mockReturnValue({ correctlyIdentifiedTargets: [], validationError: null });
