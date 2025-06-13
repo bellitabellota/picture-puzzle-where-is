@@ -25,7 +25,7 @@ describe("SelectBoxContainer", ()=> {
   })
 
   it("calls the clickHandler if OK is clicked", ()=> {
-    // that the clickHandler sets the selectedName state variable and removes the box from the screen needs to be tested in the parent component/with an system test
+    // that the clickHandler sets the selectedName state variable and removes the box from the screen needs to be tested in the parent component
     render(<SelectBoxContainer clickedCoordinates={mockClickedCoordinates} selectBox={mockSelectBox} targets={mockTargets} selectName={mockSelectName} />)
 
     const okButton = screen.getByText("OK");

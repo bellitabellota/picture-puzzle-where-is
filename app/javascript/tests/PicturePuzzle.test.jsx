@@ -154,6 +154,35 @@ describe("PicturePuzzle", ()=> {
       expect(wasCalledWithTargetBeforeAction).toBe(false);
       expect(wasCalledWithTargetAfterAction).toBe(true);
     });
+
+    it("triggers removal of the target selection box from the screen", () => {
+      usePicturePuzzle.mockReturnValue({ puzzle: testPuzzle, error: null, isLoading: false });
+      useValidateGuess.mockReturnValue({ correctlyIdentifiedTargets: [], validationError: null });
+      useGameState.mockReturnValue({ secondsToCompletion: null, gameStateError: null });
+      useStartTimer.mockReturnValue({ startTimerError: null });
+      usePuzzleFrontendTimer.mockReturnValue({ secondsPassed: 0 })
+    
+      render(
+        <RouterProvider router={memoryRouter}></RouterProvider>
+      );
+
+      let targetSelectionBox = screen.queryByTestId('select-box-container');
+
+      expect(targetSelectionBox).not.toBeInTheDocument();
+
+      const img = screen.getByRole('img');
+      fireEvent.click(img, { clientX: 100, clientY: 100 });
+      targetSelectionBox = screen.getByTestId('select-box-container');
+
+      expect(targetSelectionBox).toBeInTheDocument();
+
+      const selectBox = screen.getByRole('combobox');
+      fireEvent.change(selectBox, { target: { value: 'Test Target 1' } });
+      fireEvent.click(screen.getByText('OK')); // triggers the selectName Handler
+      targetSelectionBox = screen.queryByTestId('select-box-container');
+
+      expect(targetSelectionBox).not.toBeInTheDocument();
+    })
   })
   
   it('displays check mark when target is correctly identified', () => {
