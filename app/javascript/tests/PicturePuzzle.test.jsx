@@ -128,6 +128,34 @@ describe("PicturePuzzle", ()=> {
     expect(targetSelectionBox).toHaveStyle({position: 'absolute', top: '50px', left: '73px'});
   });
 
+  describe("when selectName Handler executes", () => {
+    it("it triggers the useValidateGuess hook with the selectedName as first argument", () => {
+      usePicturePuzzle.mockReturnValue({ puzzle: testPuzzle, error: null, isLoading: false });
+      useValidateGuess.mockReturnValue({ correctlyIdentifiedTargets: [], validationError: null });
+      useGameState.mockReturnValue({ secondsToCompletion: null, gameStateError: null });
+      useStartTimer.mockReturnValue({ startTimerError: null });
+      usePuzzleFrontendTimer.mockReturnValue({ secondsPassed: 0 })
+    
+      render(
+        <RouterProvider router={memoryRouter}></RouterProvider>
+      );
+    
+      const img = screen.getByRole('img');
+      fireEvent.click(img, { clientX: 100, clientY: 100 });
+  
+      const wasCalledWithTargetBeforeAction = useValidateGuess.mock.calls.some(arg => arg[0] === 'Test Target 1');
+  
+      const selectBox = screen.getByRole('combobox');
+      fireEvent.change(selectBox, { target: { value: 'Test Target 1' } });
+      fireEvent.click(screen.getByText('OK'));
+  
+      const wasCalledWithTargetAfterAction = useValidateGuess.mock.calls.some(arg => arg[0] === 'Test Target 1');
+    
+      expect(wasCalledWithTargetBeforeAction).toBe(false);
+      expect(wasCalledWithTargetAfterAction).toBe(true);
+    });
+  })
+  
   it('displays check mark when target is correctly identified', () => {
     usePicturePuzzle.mockReturnValue({ puzzle: testPuzzle, error: false, isLoading: false})
     useValidateGuess.mockReturnValue({ correctlyIdentifiedTargets: [{ name: "Identified Test Target", xCenter: 100, yCenter: 61 }], validationError: null });
