@@ -1,8 +1,12 @@
 import React from "react";
-import {fireEvent, render, screen, waitFor } from "@testing-library/react";
+import {fireEvent, render, screen } from "@testing-library/react";
 import RecordTimeModal from "../../components/PicturePuzzleChildComponents/RecordTimeModal";
 import { createMemoryRouter, RouterProvider } from "react-router-dom";
+import usePostResult from "../../components/custom_hooks/usePostResult";
 
+vi.mock("../../components/custom_hooks/usePostResult", () => ({ 
+  default: vi.fn()} 
+))
 
 describe("RecordTimeModal", ()=> {
   const router = createMemoryRouter(
@@ -13,11 +17,13 @@ describe("RecordTimeModal", ()=> {
   );
 
   it("displays the formatted seconds when time under 1 minute", ()=> {
+    usePostResult.mockReturnValue({ resultSaved: false, saveResultError: null })
     render(<RouterProvider router={router} />)
     expect(screen.getByText("You solved the puzzle in 30 seconds.")).toBeInTheDocument();
   })
 
   it("displays the formatted minutes and seconds when time over 1 minute", ()=> {
+    usePostResult.mockReturnValue({ resultSaved: false, saveResultError: null })
     const routerOverOneMinute = createMemoryRouter(
       [{
         path: "/",
@@ -31,47 +37,36 @@ describe("RecordTimeModal", ()=> {
   })
 
   it("displays an alert when submitting empty input field", ()=>{
+    usePostResult.mockReturnValue({ resultSaved: false, saveResultError: null })
     const mockAlert = vi.spyOn(window, 'alert').mockImplementation(() => {});
+
     render(<RouterProvider router={router} />)
     const button = screen.getByText("Record Time");
     fireEvent.click(button);
+
     expect(mockAlert).toHaveBeenCalledWith("Enter a name to record your time.");
     mockAlert.mockRestore();
   })
 
-  it("clicking 'Record  time' with name in input field submits a post request with the name", async ()=>{
-
-    window.fetch = vi.fn(() => Promise.resolve());
-
-    render(<RouterProvider router={router} />);
-    
-    document.head.innerHTML = `<meta name="csrf-token" content="test-csrf-token" />`;
-    const input = screen.getByLabelText(/Enter your name/);
-    fireEvent.change(input, { target: { value: "Test Player" } });
-    fireEvent.click(screen.getByText("Record Time"));
-
-    await waitFor(() => {
-      expect(fetch.mock.calls[0][1].method).toBe("POST");
-      expect(fetch.mock.calls[0][1].body).toBe('{"puzzle_result":{"player_name":"Test Player"}}');
-    });
-  });
-
-  it("displays an error message when post request failed", async()=>{
-    window.fetch = vi.fn(() => Promise.resolve({
-      json: () => Promise.resolve({ error: "Test error" }),
-    }));
+  it("displays an error message when usePostResult returns an error", ()=>{
+    usePostResult.mockReturnValue({ resultSaved: false, saveResultError: new Error("Test error") })
 
     render(<RouterProvider router={router} />);
     
-    document.head.innerHTML = `<meta name="csrf-token" content="test-csrf-token" />`;
-    const input = screen.getByLabelText(/Enter your name/);
-    fireEvent.change(input, { target: { value: "Test Player" } });
-    fireEvent.click(screen.getByText("Record Time"));
-
-    await waitFor(() => {
-      expect(screen.getByText(/Test error - The puzzle result could not be saved./)).toBeInTheDocument();
-    });
+    expect(screen.getByText(/Test error - The puzzle result could not be saved./)).toBeInTheDocument();
   })
 
-  /* Successful programmatic navigation to PuzzleResults will be checked in integration test*/
+  it("redirects to results page when resultSaved becomes true", () => {
+    usePostResult.mockReturnValue({ resultSaved: true, saveResultError: null })
+
+    const memoryRouter = createMemoryRouter(
+      [{ path: "/:id", element: <RecordTimeModal secondsToCompletion={30} /> },
+       { path: "/:id/results", element: <div>Results Page</div>}],
+      { initialEntries: ["/123"] }
+    );
+  
+    render(<RouterProvider router={memoryRouter} />);
+    
+    expect(screen.getByText("Results Page")).toBeInTheDocument();
+  })
 })
