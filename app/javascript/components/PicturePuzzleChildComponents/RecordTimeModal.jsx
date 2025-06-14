@@ -1,12 +1,14 @@
 import React, {useState, useRef, useEffect} from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import usePostResult from "../custom_hooks/usePostResult";
 
 function RecordTimeModal({secondsToCompletion}) {
   const params = useParams();
   const [playerName, setPlayerName] = useState(null);
-  const [saveResultsError, setSaveResultsError] = useState(null);
   const inputField = useRef();
   const navigate = useNavigate();
+
+  const {resultSaved, saveResultError} = usePostResult(playerName, navigate, params.id);
 
   const minutes = Math.floor(secondsToCompletion / 60);
   const remainingSeconds = secondsToCompletion % 60;
@@ -19,37 +21,14 @@ function RecordTimeModal({secondsToCompletion}) {
     setPlayerName(inputField.current.value);
   }
 
-  useEffect(() => {
-    if(!playerName) return;
-    const url = `/api/v1/picture_puzzles/${params.id}/results`;
-    const token = document.querySelector('meta[name="csrf-token').content
+  useEffect(()=>{
+    if(resultSaved) {
+      navigate(`/${params.id}/results`)
+    }
+  }, [resultSaved])
 
-    const body = {puzzle_result: {player_name: playerName}}
-
-    fetch(url, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "X-CSRF-Token": token
-      },
-      body: JSON.stringify(body)
-    }).then((response) => {
-      
-      if (!response.ok) {
-        return response.json().then((errorData) => {
-          throw new Error(errorData.error || `HTTP Error ${response.status}: ${response.statusText}`);
-        });
-      }
-
-      return response.json();
-    }).then((data)=> { 
-      navigate(`/${params.id}/results`);
-    })
-    .catch((error) => {setSaveResultsError(error)})
-  }, [playerName, navigate])
-
-  const pageHtml = saveResultsError ? 
-    <div className="modal"><p>{saveResultsError.message} - The puzzle result could not be saved.</p></div> 
+  const pageHtml = saveResultError ? 
+    <div className="modal"><p>{saveResultError.message} - The puzzle result could not be saved.</p></div> 
     : 
     (<div className="modal">
       <h2>PUZZLE FINISHED</h2>
