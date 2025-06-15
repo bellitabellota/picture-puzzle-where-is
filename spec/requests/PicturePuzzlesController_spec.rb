@@ -27,6 +27,13 @@ RSpec.describe "PicturePuzzlesController", type: :request do
       expect(number_returned_puzzles).to be(3)
     end
 
+    it "returned puzzles contain only id, title, and image source" do
+      puzzles = JSON.parse(response.body)
+      first_puzzle = puzzles[0]
+
+      expect(first_puzzle).to eql({ "id"=>1, "title"=>"Test Puzzle 1", "image_src"=>"/picture-puzzle-images/test-puzzle-1.jpg" })
+    end
+
     it "returns the status code 200" do
       expect(response).to have_http_status(:success)
     end
