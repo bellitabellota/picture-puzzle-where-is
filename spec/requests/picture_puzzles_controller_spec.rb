@@ -13,11 +13,13 @@ RSpec.describe "PicturePuzzlesController", type: :request do
       title: "Test Puzzle 3",
       image_src: "/picture-puzzle-images/test-puzzle-3.jpg"
     )
-
-    get "/api/v1/picture_puzzles"
   end
 
   describe "GET /picture_puzzles (#index)" do
+    before do
+      get "/api/v1/picture_puzzles"
+    end
+
     it "renders the response as json" do
       expect(response.content_type).to eq("application/json; charset=utf-8")
     end
@@ -52,6 +54,31 @@ RSpec.describe "PicturePuzzlesController", type: :request do
       get "/api/v1/picture_puzzles", headers: { "Cookie" => response.headers["Set-Cookie"] }
 
       expect(session[:player_id]).to eql(original_player_id)
+    end
+  end
+
+  describe "GET /picture_puzzle/:id (#show)" do
+    before do
+      get "/api/v1/picture_puzzles/1"
+    end
+
+    it "renders the response as json" do
+      expect(response.content_type).to eq("application/json; charset=utf-8")
+    end
+
+    it "returns the puzzle with only the required attributes (targets only containing name, not coordinates)" do
+      puzzle = JSON.parse(response.body)
+
+      expect(puzzle["id"]).to eql(1)
+      expect(puzzle["image_src"]).to eql("/picture-puzzle-images/test-puzzle-1.jpg")
+      expect(puzzle["task_description"]).to eql("Find object 1 and 2.")
+      expect(puzzle["resolution_width"]).to eql(1000)
+      expect(puzzle["resolution_height"]).to eql(674)
+      expect(puzzle["targets"]).to eql([ { "name"=>"Test Object 1" }, { "name"=>"Test Object 2" }, { "name"=>"Test Object 3" } ])
+    end
+
+    it "returns the status code 200" do
+      expect(response).to have_http_status(:success)
     end
   end
 end
