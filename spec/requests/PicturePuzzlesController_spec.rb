@@ -38,4 +38,20 @@ RSpec.describe "PicturePuzzlesController", type: :request do
       expect(response).to have_http_status(:success)
     end
   end
+
+  describe "session management" do
+    it "sets a session cookie in the response when no session exists" do
+      get "/api/v1/picture_puzzles"
+      expect(response.headers["set-cookie"]).to match(/_session=/)
+    end
+
+    it "preserves the existing session cookie" do
+      get "/api/v1/picture_puzzles"
+      original_player_id = session[:player_id]
+
+      get "/api/v1/picture_puzzles", headers: { "Cookie" => response.headers["Set-Cookie"] }
+
+      expect(session[:player_id]).to eql(original_player_id)
+    end
+  end
 end
