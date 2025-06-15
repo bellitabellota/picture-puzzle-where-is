@@ -41,7 +41,7 @@ RSpec.configure do |config|
   # If you're not using ActiveRecord, or you'd prefer not to run each of your
   # examples within a transaction, remove the following line or assign false
   # instead of true.
-  config.use_transactional_fixtures = true
+  config.use_transactional_fixtures = false
 
   # You can uncomment this line to turn off ActiveRecord support entirely.
   # config.use_active_record = false
@@ -69,4 +69,29 @@ end
 
 RSpec.configure do |config|
   config.include FactoryBot::Syntax::Methods
+end
+
+
+RSpec.configure do |config|
+  # Clean the database once at the start (optional)
+  config.before(:suite) do
+    DatabaseCleaner.clean_with(:truncation)
+  end
+
+  # Use transactions for most tests (faster)
+  config.before(:each) do
+    DatabaseCleaner.strategy = :transaction
+  end
+
+  # Switch to truncation for request specs (more reliable)
+  config.before(:each, type: :request) do
+    DatabaseCleaner.strategy = :truncation
+  end
+
+  # Start and clean around each test
+  config.around(:each) do |example|
+    DatabaseCleaner.cleaning do
+      example.run
+    end
+  end
 end
