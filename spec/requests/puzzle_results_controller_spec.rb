@@ -48,7 +48,7 @@ RSpec.describe "PuzzleResultsController", type: :request do
     context "when result could be persisted" do
       before do
         valid_params  = { puzzle_result: { player_name: "Player Name To Persist" }  }
-        post "/api/v1/picture_puzzles/#{picture_puzzle.id}/results", params: valid_params
+        post "/api/v1/picture_puzzles/#{picture_puzzle.id}/results", params: valid_params.to_json, headers: { 'Content-Type' => 'application/json' }
       end
 
       it "returns a json with the message 'Puzzle result successfully saved.'" do
@@ -64,7 +64,7 @@ RSpec.describe "PuzzleResultsController", type: :request do
     context "when result could NOT be persisted" do
       before do
         invalid_params  = { puzzle_result: { player_name: "Player Name too long so it makes the Model Validation fail." }  }
-        post "/api/v1/picture_puzzles/#{picture_puzzle.id}/results", params: invalid_params
+        post "/api/v1/picture_puzzles/#{picture_puzzle.id}/results", params: invalid_params.to_json, headers: { 'Content-Type' => 'application/json' }
       end
 
       it "returns a json with the error'Puzzle result could not be saved.'" do
