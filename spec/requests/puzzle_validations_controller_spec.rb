@@ -84,17 +84,40 @@ RSpec.describe "PuzzleValidationsController", type: :request do
       end
     end
 
+    describe "GET /api/v1/puzzle_validations/:picture_puzzle_id/game_state (#game_state)" do
+      let(:session_id) { "test_session_id" }
+      let(:picture_puzzle) { create(:picture_puzzle) }
 
+      context "when game is finished" do
+        let!(:puzzle_timer) { create(:puzzle_timer, picture_puzzle: picture_puzzle, player_id_session: session_id) }
+        before do
+          allow_any_instance_of(Api::V1::PuzzleValidationsController).to receive(:session).and_return({ player_id: session_id })
+          get "/api/v1/puzzle_validations/#{picture_puzzle.id}/game_state"
+        end
 
+        it "returns json with gameFinished is true" do
+          gameFinished = JSON.parse(response.body)["gameFinished"]
+          expect(gameFinished).to be(true)
+        end
 
-    # when correct guess could not be saved
-    #   { error: "Failed to save identified target in puzzle timer." }, status: :unprocessable_entity
-    # when end time could not be saved upon completion of the game
+        it "returns json with secondsToCompletion" do
+          seconds_to_completion = JSON.parse(response.body)["secondsToCompletion"]
+          expect(seconds_to_completion).to be_a(Integer)
+        end
+      end
 
-    # when validation successful and guess correct
-    #   returns json with { success: true, message: "Target identified correctly!", target: { name: clicked_target["name"], xCenter: x_center, yCenter: y_center } }
+      context "when game is still ongoing" do
+        let!(:puzzle_timer) { create(:puzzle_timer, picture_puzzle: picture_puzzle, player_id_session: session_id, end_time: nil) }
+        before do
+          allow_any_instance_of(Api::V1::PuzzleValidationsController).to receive(:session).and_return({ player_id: session_id })
+          get "/api/v1/puzzle_validations/#{picture_puzzle.id}/game_state"
+        end
 
-    # when validation successful but guess incorrect
-    #   returns json with { success: false, message: "Incorrect. Try again!" }
+        it "returns json with gameFinished is false" do
+          gameFinished = JSON.parse(response.body)["gameFinished"]
+          expect(gameFinished).to be(false)
+        end
+      end
+    end
   end
 end
