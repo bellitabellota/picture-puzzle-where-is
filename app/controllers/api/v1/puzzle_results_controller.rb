@@ -8,6 +8,7 @@ class Api::V1::PuzzleResultsController < ApplicationController
 
     render json: { puzzleTitle: picture_puzzle.title, results: results }
   end
+
   def create
     puzzle = PicturePuzzle.find(params[:picture_puzzle_id])
 

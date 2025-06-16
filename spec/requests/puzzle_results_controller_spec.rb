@@ -35,4 +35,46 @@ RSpec.describe "PuzzleResultsController", type: :request do
       expect(response).to have_http_status(:success)
     end
   end
+
+  describe "POST '/api/v1/picture_puzzles/:picture_puzzle_id/results' (#create)" do
+    let(:session_id) { "test_session_id" }
+    let(:picture_puzzle) { create(:picture_puzzle) }
+    let!(:puzzle_timer) { create(:puzzle_timer, picture_puzzle: picture_puzzle, player_id_session: session_id) }
+
+    before do
+      allow_any_instance_of(Api::V1::PuzzleResultsController).to receive(:session).and_return({ player_id: session_id })
+    end
+
+    context "when result could be persisted" do
+      before do
+        valid_params  = { puzzle_result: { player_name: "Player Name To Persist" }  }
+        post "/api/v1/picture_puzzles/#{picture_puzzle.id}/results", params: valid_params
+      end
+
+      it "returns a json with the message 'Puzzle result successfully saved.'" do
+        message = JSON.parse(response.body)["message"]
+        expect(message).to eql("Puzzle result successfully saved.")
+      end
+
+      it "returns the status code 200" do
+        expect(response).to have_http_status(:success)
+      end
+    end
+
+    context "when result could NOT be persisted" do
+      before do
+        invalid_params  = { puzzle_result: { player_name: "Player Name too long so it makes the Model Validation fail." }  }
+        post "/api/v1/picture_puzzles/#{picture_puzzle.id}/results", params: invalid_params
+      end
+
+      it "returns a json with the error'Puzzle result could not be saved.'" do
+        error = JSON.parse(response.body)["error"]
+        expect(error).to eql("Puzzle result could not be saved.")
+      end
+
+      it "returns the status code 422" do
+        expect(response).to have_http_status(:unprocessable_entity)
+      end
+    end
+  end
 end
