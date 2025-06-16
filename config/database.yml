@@ -80,6 +80,5 @@ test:
 #
 production:
   <<: *default
-  database: picture_puzzle_production
-  username: picture_puzzle
-  password: <%= ENV["PICTURE_PUZZLE_DATABASE_PASSWORD"] %>
+  url: <%= ENV['DATABASE_URL'] %>  # Use the .env variable
+  sslmode: require
