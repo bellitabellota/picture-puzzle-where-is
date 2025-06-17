@@ -1,24 +1,42 @@
-# README
+## Picture Puzzle App
+This project is my realization of the TOP's Photo Tagging App.
+For deployment [Koyeb](https://www.koyeb.com/) was used and the PostgreSQL database is run via [Neon](https://neon.com/), so that you can [try the app yourself](https://controversial-marigold-isaha-5a2faa70.koyeb.app/).
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+## Features
+  -	A full-stack app integrating React with Rails via esbuild.
+  -	3 different picture puzzles to solve.
+  -	A frontend timer displaying the required time.
+  -	Backend timer and backend validation of guess/game state to prevent players from hacking the game.
+  -	Upon successful completion, players can enter their name to appear in the ranking.
+  -	Tests for components and API controllers with Vitest and Rspec.
 
-Things you may want to cover:
+## Screenshots
+•	Homepage:  
+![Homepage](https://github.com/user-attachments/assets/a9e05ff3-ec94-4dd5-896a-62efa280c39b)
 
-* Ruby version
+•	Picture Puzzle - The Smurfs:  
+![Screenshot from 2025-06-16 15-09-25](https://github.com/user-attachments/assets/dbfe832d-a03a-4c82-92a8-39e4ede67921)
 
-* System dependencies
+•	Picture Puzzle successfully completed - The Smurfs: 
+![Screenshot from 2025-06-16 15-05-53](https://github.com/user-attachments/assets/0de1ff55-662f-45ef-8090-7fb60ccd61c5)
 
-* Configuration
+•	Results Page - The Smurfs:  
+![Screenshot from 2025-06-16 15-10-23](https://github.com/user-attachments/assets/db9c8def-e4f9-4ff6-a36b-8ba7bd300f90)
 
-* Database creation
 
-* Database initialization
+## Image Sources:
+The Smurfs:
+https://www.puzzle-offensive.de/?cmd=showArticle&aid=2034580&language=
 
-* How to run the test suite
+Finding Nemo:
+https://webneel.com/wallpaper/i/1-finding-nemo-movie-wallpaper/1303/o
 
-* Services (job queues, cache servers, search engines, etc.)
+Peter Pan:
+https://ar.pinterest.com/pin/23855073021952627/
 
-* Deployment instructions
+Check Mark:
+https://pngtree.com/freepng/3d-green-check-mark-icon-in-round-isolated-transparent-background-tick_8926830.html
 
-* ...
+Dices:
+https://www.flaticon.com/free-icons/dice
+
