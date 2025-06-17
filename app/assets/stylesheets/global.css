@@ -38,6 +38,8 @@ body {
   display:flex;
   justify-content: center;
   align-items: center;
+  padding-left: 3vw;
+  padding-right: 3vw;
 }
 
 main {
@@ -112,6 +114,11 @@ a:hover, a:focus {
   display: flex;
   justify-content: space-between;
   align-items: flex-end;
+  gap: 3vw;
+}
+
+.main-picture-puzzle .task-info {
+  text-align: left;
 }
 
 .main-picture-puzzle .timer {
@@ -289,7 +296,7 @@ a:hover, a:focus {
 
 .main-picture-puzzle-results .results-container > div {
   display: grid;
-  grid-template-columns: 1fr 7fr 2fr;
+  grid-template-columns: minmax(50px, 1fr) minmax(100px, 7fr) minmax(90px, 2fr);
   gap: 1rem;
   box-shadow: 0px 0px 1px rgba(0, 0, 0, 0.3);
 }
@@ -304,8 +311,39 @@ a:hover, a:focus {
   justify-self: left;
 }
 
-.main-picture-puzzle-results .results-container .rank,
-.main-picture-puzzle-results .results-container .duration-label {
-  min-width: 40px;
+@media (max-width: 750px) {
+  .main-picture-puzzle-results .results-container {
+    margin-top: 3vw;
+  }
+
+  h1 {
+    font-size: calc(2rem + 0.75vw);
+  }
+  
+  h2 {
+    font-size: calc(1rem + 1vw);
+  }
+  
+  p, a, input, label { 
+    font-size: calc(0.875rem + 0.5vw);
+  }
+
+  main {
+    padding: 7px 10px;
+  }
+}
+
+@media (max-width: 580px) {
+  h1 {
+    font-size: calc(1.5rem + 1vw);
+  }
+  
+  h2 {
+    font-size: calc(0.75rem + 0.75vw);
+  }
+  
+  p, a, input, label { 
+    font-size: calc(0.75rem + 0.25vw);
+  }
 }
 
