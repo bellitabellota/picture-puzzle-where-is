@@ -1,5 +1,6 @@
 ## Picture Puzzle App
-This project is my realization of the TOP's Photo Tagging App.
+This project is my realization of the [TOP's Photo Tagging App](https://www.theodinproject.com/lessons/react-new-where-s-waldo-a-photo-tagging-app).
+
 For deployment [Koyeb](https://www.koyeb.com/) was used and the PostgreSQL database is run via [Neon](https://neon.com/), so that you can [try the app yourself](https://controversial-marigold-isaha-5a2faa70.koyeb.app/).
 
 ## Features
