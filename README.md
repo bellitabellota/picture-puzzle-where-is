@@ -1,7 +1,7 @@
 ## Picture Puzzle App
 This project is my realization of the [TOP's Photo Tagging App](https://zippy-velma-picture-puzzle-678a8073.koyeb.app/).
 
-For deployment [Koyeb](https://www.koyeb.com/) was used and the PostgreSQL database is run via [Neon](https://neon.com/), so that you can [try the app yourself](https://controversial-marigold-isaha-5a2faa70.koyeb.app/).
+For deployment [Koyeb](https://www.koyeb.com/) was used and the PostgreSQL database is run via [Neon](https://neon.com/), so that you can [try the app yourself](https://zippy-velma-picture-puzzle-678a8073.koyeb.app/).
 
 ## Features
   -	A full-stack app integrating React with Rails via esbuild.
